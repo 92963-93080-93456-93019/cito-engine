@@ -12,7 +12,7 @@ on:
         - "develop"  
 
 jobs:
-  sonar_client:
+  sonar_cito:
     name: Test - SonarCloud Scan Engine
     runs-on: ubuntu-18.04
     steps:

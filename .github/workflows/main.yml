@@ -5,6 +5,11 @@ on:
     branches:
       - "master"
       - "develop"
+  pull_request:
+      types: [closed, review_requested]
+      branches:
+        - "master"
+        - "develop"  
 
 jobs:
   sonar_client:

@@ -17,7 +17,7 @@ public class RiderController {
     private OrderService orderService;
 
     @Autowired
-    private UserRegisterService riderService;
+    private UserRegisterService userRegisterService;
 
     // Rider updates order state
     @GetMapping(value="{riderId}/order/update",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,6 +33,6 @@ public class RiderController {
     // Rider registers
     @PostMapping(value="/register",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> registerRider(@RequestBody JsonNode payload){
-        return riderService.register(payload);
+        return userRegisterService.registerRider(payload);
     }
 }

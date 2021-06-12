@@ -61,7 +61,7 @@ public class OrderServiceTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    /*@Test
+    @Test
     public void whenGetOrdersReturnList() {
         Long clientId = 1L;
         Long appid = 1L;
@@ -379,6 +379,84 @@ public class OrderServiceTest {
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
         assertThat(r.getBody(), is(HttpResponses.INVALID_STATUS));
-    }*/
+    }
 
+    @Test
+    public void whenRatingRiderWithInvalidApp_ReturnInvalidApp(){
+        Long appid = 1L;
+        Long clientId = 1L;
+        Long riderId=16L;
+        int rating = 5;
+
+        given( appRepository.findByAppid(appid)).willReturn(null);
+
+        ResponseEntity<Object> r = orderService.consumerRatesRider(clientId,riderId,rating,appid);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_APP));
+    }
+
+    @Test
+    public void whenRatingRiderWithInvalidConsumer_ReturnInvalidConsumer(){
+        Long appid = 1L;
+        Long clientId = 1L;
+        Long riderId=16L;
+        int rating = 5;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(null);
+
+        ResponseEntity<Object> r = orderService.consumerRatesRider(clientId,riderId,rating,appid);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_CONSUMER));
+    }
+
+    @Test
+    public void whenRatingInvalidRider_ReturnInvalidRider(){
+        Long appid = 1L;
+        Long clientId = 1L;
+        Long riderId=16L;
+        int rating = 5;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( riderRepository.findByRiderId(riderId)).willReturn(null);
+
+        ResponseEntity<Object> r = orderService.consumerRatesRider(clientId,riderId,rating,appid);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_RIDER));
+    }
+
+
+    @Test
+    public void whenRatingRider_ReturnOk(){
+        Long appid = 1L;
+        Long clientId = 1L;
+        Long riderId=16L;
+        int rating = 5;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Rider r1 = new Rider(1L,"Dinis","Cruz","912223334","Mercedes","00-00-00");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( riderRepository.findByRiderId(riderId)).willReturn(r1);
+
+        ResponseEntity<Object> r = orderService.consumerRatesRider(clientId,riderId,rating,appid);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
+
+        assertThat(r.getBody(), is(HttpResponses.RIDER_RATED));
+    }
 }

@@ -24,7 +24,6 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 import ua.tqs.cito.CitoApplication;
-import ua.tqs.cito.controller.ClientController;
 import ua.tqs.cito.model.*;
 import ua.tqs.cito.repository.AppRepository;
 import ua.tqs.cito.repository.ConsumerRepository;
@@ -41,7 +40,7 @@ import java.util.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CitoApplication.class)
 @AutoConfigureMockMvc
-public class ClientControllerITest {
+public class AppControllerITest {
     @LocalServerPort
     int port;
 
@@ -50,8 +49,8 @@ public class ClientControllerITest {
         RestAssured.port = port;
     }
 
-    /*@Test
-    public void whenRegisterOrder_thenReturnCreated() throws Exception {
+    @Test
+    public void whenRegisterOrder_thenReturnCreated(){
 
         String response = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":5,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
 
@@ -66,10 +65,10 @@ public class ClientControllerITest {
     }
 
     @Test
-    public void whenGetOrders_thenReturnOrders() throws Exception {
+    public void whenGetOrders_thenReturnOrders() {
 
         RestAssured
-                .get("http://localhost:8081/clientApi/1/orders?clientId=1&appid=1")
+                .get("http://localhost:8081/clientApi/1/orders?appid=1")
                 .then()
                 .assertThat()
                 .and().statusCode(200)
@@ -77,10 +76,10 @@ public class ClientControllerITest {
     }
 
     @Test
-    public void whenGetProducts_thenReturnProductss() throws Exception {
+    public void whenGetProducts_thenReturnProductss() {
 
         RestAssured
-                .get("http://localhost:8081/clientApi/1/products?clientId=1&appid=1")
+                .get("http://localhost:8081/clientApi/1/products?appid=1")
                 .then()
                 .assertThat()
                 .and().statusCode(200)
@@ -88,14 +87,23 @@ public class ClientControllerITest {
     }
 
     @Test
-    public void whenGetProductsByQuery_ReturnProducts() throws Exception {
+    public void whenGetProductsByQuery_ReturnProducts() {
 
         RestAssured
-                .get("http://localhost:8081/clientApi/1/search?clientId=1&appid=1&query=benuron")
+                .get("http://localhost:8081/clientApi/1/search?appid=1&query=benuron")
                 .then()
                 .assertThat()
                 .and().statusCode(200)
                 .and().body("size()",greaterThan(0));
-    }*/
+    }
 
+    @Test
+    public void whenGetRateRider_ReturnOk() throws Exception {
+
+        RestAssured
+                .get("http://localhost:8081/clientApi/1/16/rate?rating=5&appid=1")
+                .then()
+                .assertThat()
+                .and().statusCode(200);
+    }
 }

@@ -1,9 +1,7 @@
 package ua.tqs.cito.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ public class OrderService {
     private RiderRepository riderRepository;
 
     public ResponseEntity<Object> getOrders(Long clientId, Long appid) {
-        if (checkAppId(appid))
+        if (!checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
         Consumer c = consumerRepository.findByConsumerId(clientId);
@@ -92,7 +90,7 @@ public class OrderService {
 
     public ResponseEntity<Object> updateOrder(Long riderId, Long appid, Long orderid, String status) {
 
-        if (checkAppId(appid))
+        if (!checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
         if (!checkRiderId(riderId))
@@ -128,12 +126,17 @@ public class OrderService {
 
     }
 
-    public ResponseEntity<Object> rate(Long riderId, Integer rating) {
+    public ResponseEntity<Object> consumerRatesRider(Long consumerId, Long riderId, Integer rating, Long appid) {
+
+        if (!checkAppId(appid))
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
+
+        if (!checkConsumerId(consumerId))
+            return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
+
         if (!checkRiderId(riderId))
             return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
-
-        Rider r1 = riderRepository.getById(riderId);
-
+        Rider r1 = riderRepository.findByRiderId(riderId);
         r1.addRep(rating);
 
         return new ResponseEntity<>(HttpResponses.RIDER_RATED, HttpStatus.OK);
@@ -141,7 +144,7 @@ public class OrderService {
 
     // Check if app exists
     private boolean checkAppId(Long appId) {
-        return appRepository.findByAppid(appId) == null;
+        return appRepository.findByAppid(appId) != null;
     }
 
     // Check if rider exists

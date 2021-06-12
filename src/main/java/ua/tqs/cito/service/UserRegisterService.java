@@ -19,7 +19,7 @@ public class UserRegisterService {
     @Autowired
     private RiderRepository riderRepository;
 
-    public ResponseEntity<Object> register(JsonNode payload) {
+    public ResponseEntity<Object> registerRider(JsonNode payload) {
 
         if (payload.path("vehicle").path("name").asText().equals("")) {
             return new ResponseEntity<>(HttpResponses.INVALID_VEHICLE, HttpStatus.FORBIDDEN);

@@ -7,9 +7,7 @@ import lombok.ToString;
 import ua.tqs.cito.utils.OrderStatusEnum;
 
 import javax.persistence.*;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -32,7 +30,7 @@ public class Order {
     @JoinColumn(name = "consumerId") // A Consumer has many orders (foreign key)
     private Consumer endConsumer;
 
-    private OrderStatusEnum orderStatusEnum;
+    private OrderStatusEnum status;
 
     @ManyToOne
     @JoinColumn(name = "riderId") // A rider  has many orders (foreign key)
@@ -44,10 +42,10 @@ public class Order {
 
     private String address;
 
-    public Order(List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum orderStatusEnum, App app, String address){
+    public Order(List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum status, App app, String address){
         this.productListItems=productListItems;
         this.endConsumer=endConsumer;
-        this.orderStatusEnum = orderStatusEnum.PENDING;
+        this.status = status.PENDING;
         this.rider=null;
         this.app=app;
         this.price=0.0;
@@ -57,10 +55,10 @@ public class Order {
         this.address=address;
     }
 
-    public Order(Long orderId, List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum orderStatusEnum, App app, String address){
+    public Order(Long orderId, List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum status, App app, String address){
         this.productListItems=productListItems;
         this.endConsumer=endConsumer;
-        this.orderStatusEnum = orderStatusEnum.PENDING;
+        this.status = status.PENDING;
         this.rider=null;
         this.app=app;
         this.price=0.0;

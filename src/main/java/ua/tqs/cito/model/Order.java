@@ -30,7 +30,7 @@ public class Order {
     @JoinColumn(name = "consumerId") // A Consumer has many orders (foreign key)
     private Consumer endConsumer;
 
-    private OrderStatusEnum status;
+    private OrderStatusEnum orderStatusEnum;
 
     @ManyToOne
     @JoinColumn(name = "riderId") // A rider  has many orders (foreign key)
@@ -51,7 +51,7 @@ public class Order {
 
         this.productListItems=productListItems;
         this.endConsumer=endConsumer;
-        this.status = status.PENDING;
+        this.orderStatusEnum = orderStatusEnum.PENDING;
         this.rider=null;
         this.app=app;
         this.price=0.0;
@@ -68,7 +68,7 @@ public class Order {
 
         this.productListItems=productListItems;
         this.endConsumer=endConsumer;
-        this.status = status.PENDING;
+        this.orderStatusEnum = orderStatusEnum.PENDING;
         this.rider=null;
         this.app=app;
         this.price=0.0;

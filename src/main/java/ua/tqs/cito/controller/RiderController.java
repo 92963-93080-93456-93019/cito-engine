@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.tqs.cito.service.OrderService;
+import ua.tqs.cito.service.RiderService;
 import ua.tqs.cito.service.UserRegisterService;
 
 @Controller
@@ -18,6 +19,9 @@ public class RiderController {
 
     @Autowired
     private UserRegisterService userRegisterService;
+
+    @Autowired
+    private RiderService riderService;
 
     // Rider updates order state
     @GetMapping(value="{riderId}/order/update",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,5 +38,18 @@ public class RiderController {
     @PostMapping(value="/register",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> registerRider(@RequestBody JsonNode payload){
         return userRegisterService.registerRider(payload);
+    }
+
+    // Rider Availability
+    @PostMapping(value="{riderId}/available",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> registerRider(@PathVariable Long riderId,@RequestBody JsonNode payload){
+        return riderService.updateAvailability(payload,riderId);
+    }
+
+
+    // Rider location
+    @PostMapping(value="{riderId}/location",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateLocation(@PathVariable Long riderId,@RequestBody JsonNode payload){
+        return riderService.updateLocation(payload,riderId);
     }
 }

@@ -16,4 +16,10 @@ public class HttpResponses {
     public static final String INVALID_STATUS = "{\"code\" : 404, \"message\" : \"Status invalid.\"}";
     public static final String INVALID_VEHICLE = "{\"code\" : 403, \"message\" : \"Vehicle not valid.\"}";
     public static final String RIDER_RATED = "{\"code\" : 200, \"message\" : \"Rider rated.\"}";
+    public static final String RIDER_AVAILABILITY_UPDATED = "{\"code\" : 200, \"message\" : \"Rider availability updated.\"}";
+    public static final String RIDER_AVAILABILITY_INVALID = "{\"code\" : 403, \"message\" : \"Rider availability invalid.\"}";
+    public static final String RIDER_LOCATION_INVALID = "{\"code\" : 403, \"message\" : \"Rider location invalid.\"}";
+    public static final String ORDER_LOCATION_INVALID = "{\"code\" : 403, \"message\" : \"Order location invalid.\"}";
+    public static final String RIDER_LOCATION_UPDATED = "{\"code\" : 200, \"message\" : \"Rider location updated.\"}";
+    public static final String NO_RIDERS_AVAILABLE = "{\"code\" : 404, \"message\" : \"There are no riders.\"}";
 }

@@ -27,6 +27,9 @@ public class Rider {
     private List<Integer> reps;
     private String vehicleName;
     private String vehicleLicense;
+    private Boolean ifAvailable=true;
+    private Double latitutde;
+    private Double longitude;
 
     public Rider(String fname, String lname, String fnumber,String vehicleName,String vehicleLicense) {
         this.fname=fname;
@@ -36,6 +39,8 @@ public class Rider {
         this.vehicleName=vehicleName;
         this.vehicleLicense=vehicleLicense;
         this.reps = new ArrayList<>();
+        this.latitutde=0.0;
+        this.longitude=0.0;
     }
 
     public Rider(Long riderId,String fname, String lname, String fnumber,String vehicleName,String vehicleLicense) {
@@ -47,6 +52,8 @@ public class Rider {
         this.riderId=riderId;
         this.vehicleLicense=vehicleLicense;
         this.vehicleName=vehicleName;
+        this.latitutde=0.0;
+        this.longitude=0.0;
     }
 
     public void addRep(Integer i){
@@ -56,6 +63,7 @@ public class Rider {
             total+=rep;
         }
         this.reputation=total/reps.size();
+
     }
 
 

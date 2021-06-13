@@ -84,9 +84,28 @@ public class OrderService {
         String address = payload.path("info").path("deliveryAddress").asText();
         if(address.equals(""))
             return new ResponseEntity<>(HttpResponses.INVALID_ADDRESS, HttpStatus.FORBIDDEN);
+        if(payload.path("info").path("latitude").asText().equals(""))
+            return new ResponseEntity<>(HttpResponses.ORDER_LOCATION_INVALID, HttpStatus.FORBIDDEN);
 
-        Order o1 = new Order(prods,c, OrderStatusEnum.PENDING,app,address);
-        System.out.println(o1.toString());
+        double latitude = Double.parseDouble(payload.path("info").path("latitude").asText());
+
+        if(latitude>90 || latitude <-90)
+            return new ResponseEntity<>(HttpResponses.ORDER_LOCATION_INVALID, HttpStatus.FORBIDDEN);
+
+        if(payload.path("info").path("longitude").asText().equals(""))
+            return new ResponseEntity<>(HttpResponses.ORDER_LOCATION_INVALID, HttpStatus.FORBIDDEN);
+
+        double longitude = Double.parseDouble(payload.path("info").path("longitude").asText());
+
+        if(longitude>180 || longitude <-180)
+            return new ResponseEntity<>(HttpResponses.ORDER_LOCATION_INVALID, HttpStatus.FORBIDDEN);
+
+        Rider r1 = matchRider(latitude,longitude);
+
+        if(r1==null)
+            return new ResponseEntity<>(HttpResponses.NO_RIDERS_AVAILABLE, HttpStatus.NOT_FOUND);
+
+        Order o1 = new Order(prods,c, OrderStatusEnum.PENDING,app,address,latitude,longitude);
         orderRepository.save(o1);
         return new ResponseEntity<>(HttpResponses.ORDER_SAVED, HttpStatus.CREATED);
     }
@@ -166,6 +185,42 @@ public class OrderService {
        if(productRepository.findById(id).isEmpty())
            return null;
        return productRepository.findById(id).get();
+    }
+
+    public Rider matchRider(Double latitude,Double longitude){
+        List<Rider> riders = riderRepository.findAll();
+
+        if(riders.size()==0)
+            return null;
+
+        Rider r1 = null;
+
+        double distance = 0.0;
+
+        for(Rider r:riders){
+            if(distance == 0.0){
+                distance = calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude());
+                r1 = r;
+            }
+            else{
+                if(calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude())<distance)
+                    distance=calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude());
+                r1=r;
+            }
+        }
+
+        return r1;
+    }
+
+    public double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return (earthRadius * c);
     }
 
 

@@ -61,4 +61,5 @@ public class AppController {
 	public ResponseEntity<Object> rateRider(@PathVariable Long consumerId, @PathVariable Long riderId, Integer rating, Long appid){
 		return orderService.consumerRatesRider(consumerId, riderId, rating, appid);
 	}
+
 }

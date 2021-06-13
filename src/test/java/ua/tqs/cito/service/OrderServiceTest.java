@@ -85,8 +85,8 @@ public class OrderServiceTest {
 
         List<Order> orders = new ArrayList<>();
 
-        Order o1 = new Order(1L, l,c1, OrderStatusEnum.PENDING,app,"Fatima");
-        Order o2 = new Order(2L, l2,c1, OrderStatusEnum.PENDING,app,"Fatima");
+        Order o1 = new Order(1L, l,c1, OrderStatusEnum.PENDING,app,"Fatima",50.0,50.0);
+        Order o2 = new Order(2L, l2,c1, OrderStatusEnum.PENDING,app,"Fatima",50.0,50.0);
 
         orders.add(o1);
         orders.add(o2);
@@ -139,7 +139,7 @@ public class OrderServiceTest {
 
         given( appRepository.findByAppid(appid)).willReturn(null);
 
-        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
@@ -160,7 +160,7 @@ public class OrderServiceTest {
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( consumerRepository.findByConsumerId(clientId)).willReturn(null);
 
-        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
@@ -181,7 +181,7 @@ public class OrderServiceTest {
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
 
-        String request = "{\"products\":[],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
+        String request = "{\"products\":[],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
@@ -209,7 +209,7 @@ public class OrderServiceTest {
         given( productRepository.findById(3L)).willReturn(opt1);
         given( productRepository.findById(4L)).willReturn(opt2);
 
-        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
@@ -237,7 +237,7 @@ public class OrderServiceTest {
         given( productRepository.findById(3L)).willReturn(opt1);
         given( productRepository.findById(4L)).willReturn(opt2);
 
-        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"\",\"deliverInPerson\":true}}";
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
@@ -248,7 +248,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void whenRegisterOrders_ReturnOk() throws JsonProcessingException {
+    public void whenRegisterOrdersWithNoLatitude_ReturnForbidden() throws JsonProcessingException {
         Long appid = 1L;
         Long clientId = 1L;
 
@@ -259,6 +259,204 @@ public class OrderServiceTest {
 
         Optional<Product> opt1 = Optional.of(p1);
         Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": \"\",\"longitude\": 50.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.ORDER_LOCATION_INVALID));
+    }
+
+    @Test
+    public void whenRegisterOrdersWithToMuchLatitude_ReturnForbidden() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 91.0,\"longitude\": 50.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.ORDER_LOCATION_INVALID));
+    }
+
+    @Test
+    public void whenRegisterOrdersWithToLessLatitude_ReturnForbidden() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": -91.0,\"longitude\": 50.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.ORDER_LOCATION_INVALID));
+    }
+
+    @Test
+    public void whenRegisterOrdersWithNoLongitude_ReturnForbidden() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.ORDER_LOCATION_INVALID));
+    }
+
+    @Test
+    public void whenRegisterOrdersWithToMuchLongitude_ReturnForbidden() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 181.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.ORDER_LOCATION_INVALID));
+    }
+
+    @Test
+    public void whenRegisterOrdersWithToLessLongitude_ReturnForbidden() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": -181.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.ORDER_LOCATION_INVALID));
+    }
+
+    @Test
+    public void whenRegisterOrdersButNoRidersAvailable_ReturnNotFound() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
+        given( appRepository.findByAppid(appid)).willReturn(app);
+        given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
+        given( productRepository.findById(3L)).willReturn(opt1);
+        given( productRepository.findById(4L)).willReturn(opt2);
+        given( riderRepository.findAll()).willReturn(new ArrayList<>());
+
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.NOT_FOUND)));
+
+        assertThat(r.getBody(), is(HttpResponses.NO_RIDERS_AVAILABLE));
+    }
+
+    @Test
+    public void whenRegisterOrders_ReturnOK() throws JsonProcessingException {
+        Long appid = 1L;
+        Long clientId = 1L;
+
+        App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+        Consumer c1 = new Consumer(1L,"Duarte","Mortagua","919191919","Fatima",app);
+        Product p1 = new Product(3L, "Benuron","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+        Product p2 = new Product(4L, "Brufen","Farmacia Geral","Great for Small pains!",app,15.0,"someBase64Image");
+
+        Optional<Product> opt1 = Optional.of(p1);
+        Optional<Product> opt2 = Optional.of(p2);
+
         ProductListItem pli1 = new ProductListItem(p1,2);
         ProductListItem pli2 = new ProductListItem(p2,3);
 
@@ -266,21 +464,31 @@ public class OrderServiceTest {
         l.add(pli1);
         l.add(pli2);
 
-        Order o1 = new Order(l,c1, OrderStatusEnum.PENDING,app,"Rua do corvo");
-        System.out.println("test: " + o1.toString());
+        List<Rider> riders = new ArrayList<>();
+
+        Rider r1 = new Rider(1L,"Dinis","Cruz","912223334","Mercedes","00-00-00");
+        Rider r2 = new Rider(2L,"Tiago","Oliveira","912223333","Ford","11-11-11");
+        r1.setLongitude(50.0);
+        r1.setLatitutde(50.0);
+        r2.setLongitude(80.0);
+        r2.setLongitude(-60.0);
+        riders.add(r1);
+        riders.add(r2);
+
+        Order o1 = new Order(l,c1, OrderStatusEnum.PENDING,app,"Rua do corvo",50.0,50.0);
 
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
         given( productRepository.findById(3L)).willReturn(opt1);
         given( productRepository.findById(4L)).willReturn(opt2);
+        given( riderRepository.findAll()).willReturn(riders);
         given( orderRepository.save(o1)).willReturn(o1);
 
-        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
 
-        System.out.println(orderRepository.save(o1));
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.CREATED)));
 
         assertThat(r.getBody(), is(HttpResponses.ORDER_SAVED));
@@ -303,7 +511,7 @@ public class OrderServiceTest {
         l.add(pli1);
         l.add(pli2);
 
-        Order o1 = new Order(1L, l,c1, OrderStatusEnum.PENDING,app,"Fatima");
+        Order o1 = new Order(1L, l,c1, OrderStatusEnum.PENDING,app,"Fatima",50.0,50.0);
 
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( riderRepository.findByRiderId(r1.getRiderId())).willReturn(r1);
@@ -366,7 +574,7 @@ public class OrderServiceTest {
         l.add(pli1);
         l.add(pli2);
 
-        Order o1 = new Order(1L, l,c1, OrderStatusEnum.PENDING,app,"Fatima");
+        Order o1 = new Order(1L, l,c1, OrderStatusEnum.PENDING,app,"Fatima",50.0,50.0);
 
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( riderRepository.findByRiderId(r1.getRiderId())).willReturn(r1);

@@ -15,5 +15,5 @@ public class HttpResponses {
     public static final String MANAGER_NOT_FOUND_FOR_APP = "{\"code\" : 404, \"message\" : \"Manager not found for app.\"}";
     public static final String INVALID_STATUS = "{\"code\" : 404, \"message\" : \"Status invalid.\"}";
     public static final String INVALID_VEHICLE = "{\"code\" : 403, \"message\" : \"Vehicle not valid.\"}";
-    public static final String RIDER_RATED = "{\"code\" : 200, \"message\" : \"Rader rated.\"}";
+    public static final String RIDER_RATED = "{\"code\" : 200, \"message\" : \"Rider rated.\"}";
 }

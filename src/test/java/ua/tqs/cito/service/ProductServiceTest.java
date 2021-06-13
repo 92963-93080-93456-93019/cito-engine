@@ -49,7 +49,7 @@ public class ProductServiceTest {
 	@InjectMocks
 	private ProductService productService;
     
-    /*@Test
+    @Test
     public void whenCreateValidproductCreateIt() {
     	Long managerId = 1L;
     	Long appid = 1L;
@@ -192,7 +192,7 @@ public class ProductServiceTest {
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
         assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid clientId.\"}"));
-    }*/
+    }
 	
 	
 }

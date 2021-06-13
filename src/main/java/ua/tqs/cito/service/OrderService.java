@@ -1,9 +1,7 @@
 package ua.tqs.cito.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +35,11 @@ public class OrderService {
         if (checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
-        Consumer c = consumerRepository.findByConsumerId(clientId);
-        if (c == null) {
+        if (checkConsumerId(clientId)) {
             return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
         }
+
+        Consumer c = consumerRepository.findByConsumerId(clientId);
 
         List<Order> orders = orderRepository.findOrdersByEndConsumer(c);
         return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -52,14 +51,16 @@ public class OrderService {
         //App app1 = checkAppId(Long.parseLong(payload.path("info").path("appid").asText()));
         // Consumer c = checkConsumer(Long.parseLong(payload.path("info").path("userId").asText()));
 
-        App app = appRepository.findByAppid(appid);
-        if (app == null)
+        if (checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
-        Consumer c = consumerRepository.findByConsumerId(clientId);
-        if (c == null) {
+        App app = appRepository.findByAppid(appid);
+
+        if (checkConsumerId(clientId)) {
             return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
         }
+
+        Consumer c = consumerRepository.findByConsumerId(clientId);
 
         List<ProductListItem> prods = new ArrayList<>();
         JsonNode payload_prods = payload.path("products");
@@ -95,7 +96,7 @@ public class OrderService {
         if (checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
-        if (!checkRiderId(riderId))
+        if (checkRiderId(riderId))
             return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
 
         Order orderUpdate = orderRepository.getById(orderid);
@@ -128,11 +129,17 @@ public class OrderService {
 
     }
 
-    public ResponseEntity<Object> rate(Long riderId, Integer rating) {
-        if (!checkRiderId(riderId))
+    public ResponseEntity<Object> consumerRatesRider(Long consumerId, Long riderId, Integer rating, Long appid) {
+        if (checkAppId(appid))
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
+
+        if (checkConsumerId(consumerId))
+            return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
+
+        if (checkRiderId(riderId))
             return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
 
-        Rider r1 = riderRepository.getById(riderId);
+        Rider r1 = riderRepository.findByRiderId(riderId);
 
         r1.addRep(rating);
 
@@ -146,12 +153,12 @@ public class OrderService {
 
     // Check if rider exists
     private boolean checkRiderId(Long riderId) {
-        return riderRepository.findByRiderId(riderId) != null;
+        return riderRepository.findByRiderId(riderId) == null;
     }
 
     // Check if client exists
     private boolean checkConsumerId(Long consumerId) {
-        return consumerRepository.findByConsumerId(consumerId) != null;
+        return consumerRepository.findByConsumerId(consumerId) == null;
     }
 
     // Check and return product if exists, null otherwise

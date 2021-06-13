@@ -19,7 +19,7 @@ public class UserRegisterService {
     @Autowired
     private RiderRepository riderRepository;
 
-    public ResponseEntity<Object> register(JsonNode payload) {
+    public ResponseEntity<Object> registerRider(JsonNode payload) {
 
         if (payload.path("vehicle").path("name").asText().equals("")) {
             return new ResponseEntity<>(HttpResponses.INVALID_VEHICLE, HttpStatus.FORBIDDEN);
@@ -42,7 +42,6 @@ public class UserRegisterService {
         }
 
         Rider r1 = new Rider(payload.path("rider").path("fname").asText(), payload.path("rider").path("lname").asText(), payload.path("rider").path("fnumber").asText(), payload.path("vehicle").path("name").asText(), payload.path("vehicle").path("license").asText());
-        System.out.println(r1.toString());
         riderRepository.save(r1);
         return new ResponseEntity<>(HttpResponses.RIDER_SAVED, HttpStatus.CREATED);
     }

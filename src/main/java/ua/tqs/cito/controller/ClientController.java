@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.tqs.cito.model.Order;
 import ua.tqs.cito.service.OrderService;
 import ua.tqs.cito.service.ProductService;
 import ua.tqs.cito.service.SearchService;

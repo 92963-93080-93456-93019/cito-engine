@@ -203,16 +203,10 @@ public class OrderService {
                 r1 = r;
             }
             else{
-                System.out.println("entrou");
-                System.out.println("distanceold" + distance);
-                System.out.println("distance new" + calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude()));
-                if(calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude())<distance) {
-                    distance = calculateDistance(latitude, longitude, r.getLatitutde(), r.getLongitude());
-                    r1 = r;
-                }
+                if(calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude())<distance)
+                    distance=calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude());
+                r1=r;
             }
-            System.out.println(r1.toString());
-            System.out.println(distance);
         }
 
         return r1;

@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 import static org.mockito.BDDMockito.given;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -662,5 +661,6 @@ public class OrderServiceTest {
 
         assertThat(r.getBody(), is(HttpResponses.RIDER_RATED));
     }
+
 
 }

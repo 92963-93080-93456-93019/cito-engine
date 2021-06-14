@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 import static org.mockito.BDDMockito.given;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -662,5 +663,36 @@ public class OrderServiceTest {
         assertThat(r.getBody(), is(HttpResponses.RIDER_RATED));
     }
 
+    @Test
+    public void MatchingRiderTest(){
+
+        Rider r1 = new Rider(1L,"Dinis","Cruz","912223334","Mercedes","00-00-00");
+        Rider r2 = new Rider(2L,"Tiago","Oliveira","912223333","Ford","11-11-11");
+
+        r1.setLatitutde(51.0);
+        r1.setLongitude(51.0);
+        r2.setLatitutde(52.0);
+        r2.setLongitude(52.0);
+
+        List<Rider> riders = new ArrayList<>();
+        riders.add(r1);
+        riders.add(r2);
+
+        given( riderRepository.findAll()).willReturn(riders);
+
+        Rider response = orderService.matchRider(50.0,50.0);
+
+        assertThat(response).isEqualTo(r1);
+    }
+
+
+    @Test
+    public void CalculateDistanceTest(){
+
+        Double response = orderService.calculateDistance(50.0,50.0,51,51);
+        Double response1 = orderService.calculateDistance(50.0,50.0,52,52);
+
+        assertThat(response ).isLessThan(response1);
+    }
 
 }

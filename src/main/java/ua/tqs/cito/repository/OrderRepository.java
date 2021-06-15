@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ua.tqs.cito.model.Consumer;
 import ua.tqs.cito.model.Order;
+import ua.tqs.cito.model.Rider;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     public Order findByOrderId(Long id);
     public List<Order> findOrdersByEndConsumer(Consumer c);
+    public List<Order> findOrdersByRider(Rider rider);
 }

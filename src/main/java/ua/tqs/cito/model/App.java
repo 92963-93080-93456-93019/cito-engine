@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,8 +32,6 @@ public class App {
     private String name;
     private String address;
     private String schedule;
-    @OneToMany(mappedBy = "app")
-    private List<Manager> managers;
 
     @Lob
     private String image;
@@ -77,14 +76,6 @@ public class App {
 		this.schedule = schedule;
 	}
 
-	public List<Manager> getManagers() {
-		return managers;
-	}
-
-	public void setManagers(List<Manager> managers) {
-		this.managers = managers;
-	}
-
 	public String getImage() {
 		return image;
 	}
@@ -92,7 +83,5 @@ public class App {
 	public void setImage(String image) {
 		this.image = image;
 	}
-
-
 
 }

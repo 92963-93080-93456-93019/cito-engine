@@ -41,7 +41,9 @@ public class ProductService {
 		Manager manager = managerRepository.findManagerByApp(app);
 		if (manager == null || !manager.getManagerId().equals(managerId))
 			return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
-		
+
+		p.setApp(app);
+		System.out.println(p);
 		if (p.getName() == null || p.getApp() == null || p.getDescription() == null || p.getImage() == null || p.getPrice() == null || p.getCategory() == null) {
 			return new ResponseEntity<>(HttpResponses.PRODUCT_NOT_SAVED, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -62,7 +64,7 @@ public class ProductService {
 		return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
 	}
 
-	public ResponseEntity<Object> getAllProductsForClient(Long consumerId, Long appid){
+	public ResponseEntity<Object> getAllProductsForClient(Long consumerId, Long appid, String query){
 
 		var app = appRepository.findByAppid(appid);
 		if (app == null)
@@ -70,8 +72,12 @@ public class ProductService {
 
 		if (!checkConsumerId(consumerId))
 			return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
-
-		return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
+		if (query == null) {
+			System.out.println("QUERY IS NULL");
+			return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(productRepository.findByNameLikeAndApp("%" + query + "%", app), HttpStatus.OK);
+		}
 	}
 
 	// Check if client exists

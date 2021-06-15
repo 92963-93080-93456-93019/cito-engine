@@ -2,6 +2,7 @@ package ua.tqs.cito.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,8 @@ public class OrderService {
     @Autowired
     private RiderRepository riderRepository;
 
-    public ResponseEntity<Object> getOrders(Long clientId, Long appid) {
+    public ResponseEntity<Object> getOrdersForConsumer(Long clientId, Long appid) {
+
         if (checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
@@ -45,11 +47,19 @@ public class OrderService {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> registerOrder( Long clientId, Long appid, JsonNode payload ){
-        // OLD JSON FIELDS (REMOVE THEM FROM JSON IN FRONTEND)
+    public ResponseEntity<Object> getOrdersForRider(Long riderId) {
 
-        //App app1 = checkAppId(Long.parseLong(payload.path("info").path("appid").asText()));
-        // Consumer c = checkConsumer(Long.parseLong(payload.path("info").path("userId").asText()));
+        if (checkRiderId(riderId)) {
+            return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
+        }
+
+        Rider rider = riderRepository.findByRiderId(riderId);
+
+        List<Order> orders = orderRepository.findOrdersByRider(rider);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> registerOrder( Long clientId, Long appid, JsonNode payload ){
 
         if (checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
@@ -111,40 +121,49 @@ public class OrderService {
         return new ResponseEntity<>(HttpResponses.ORDER_SAVED, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> updateOrder(Long riderId, Long appid, Long orderid, String status) {
-
-        if (checkAppId(appid))
-            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
+    public ResponseEntity<Object> updateOrder(Long riderId, JsonNode payload) {
 
         if (checkRiderId(riderId))
             return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
 
-        Order orderUpdate = orderRepository.getById(orderid);
+        long orderId = payload.path("orderId").asLong();
+        String status = payload.path("status").asText();
+
+        if(orderId == 0)
+            return new ResponseEntity<>(HttpResponses.INVALID_ORDER, HttpStatus.FORBIDDEN);
+
+        if(status.equals(""))
+            return new ResponseEntity<>(HttpResponses.INVALID_STATUS, HttpStatus.FORBIDDEN);
+
+        Order orderToUpdate = checkAndGetOrder(orderId);
+        if( orderToUpdate == null ){
+            return new ResponseEntity<>(HttpResponses.INVALID_ORDER, HttpStatus.FORBIDDEN);
+        }
 
         String state = "";
 
         switch(status){
             case "GOING_TO_BUY":
-                orderUpdate.setOrderStatusEnum(OrderStatusEnum.GOING_TO_BUY);
+                orderToUpdate.setOrderStatusEnum(OrderStatusEnum.GOING_TO_BUY);
                 state="GOING_TO_BUY";
                 break;
             case "BUYING":
-                orderUpdate.setOrderStatusEnum(OrderStatusEnum.BUYING);
+                orderToUpdate.setOrderStatusEnum(OrderStatusEnum.BUYING);
                 state="BUYING";
                 break;
             case "DELIVERING":
-                orderUpdate.setOrderStatusEnum(OrderStatusEnum.DELIVERING);
+                orderToUpdate.setOrderStatusEnum(OrderStatusEnum.DELIVERING);
                 state="DELIVERING";
                 break;
             case "DELIVERED":
-                orderUpdate.setOrderStatusEnum(OrderStatusEnum.DELIVERED);
+                orderToUpdate.setOrderStatusEnum(OrderStatusEnum.DELIVERED);
                 state="DELIVERED";
                 break;
             default:
                 return new ResponseEntity<>(HttpResponses.INVALID_STATUS, HttpStatus.FORBIDDEN);
         }
 
-        orderRepository.save(orderUpdate);
+        orderRepository.save(orderToUpdate);
         return new ResponseEntity<>(HttpResponses.ORDER_UPDATED.replace("#", state), HttpStatus.OK);
 
     }
@@ -166,6 +185,8 @@ public class OrderService {
         return new ResponseEntity<>(HttpResponses.RIDER_RATED, HttpStatus.OK);
     }
 
+
+
     // Check if app exists
     private boolean checkAppId(Long appId) {
         return appRepository.findByAppid(appId) == null;
@@ -186,6 +207,14 @@ public class OrderService {
        if(productRepository.findById(id).isEmpty())
            return null;
        return productRepository.findById(id).get();
+    }
+
+    // Check and return order if exists, null otherwise
+    public Order checkAndGetOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isEmpty())
+            return null;
+        return order.get();
     }
 
     public Rider matchRider(Double latitude,Double longitude){
@@ -231,6 +260,7 @@ public class OrderService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return (earthRadius * c);
     }
+
 
 
 }

@@ -24,12 +24,12 @@ public class AppControllerITest {
     @Test
     public void whenRegisterOrder_thenReturnCreated(){
 
-        String response = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":5,\"quantity\":3}],\"info\":{\"latitude\":50,\"longitude\":50,\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
+        String response = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":5,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
 
         RestAssured
                 .given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/clientApi/1/order/register?appid=1")
+                .body(response).post("http://localhost:8081/clientApi/1/orders?appid=1")
                 .then()
                 .assertThat()
                 .statusCode(201);
@@ -62,7 +62,7 @@ public class AppControllerITest {
     public void whenGetProductsByQuery_ReturnProducts(){
 
         RestAssured
-                .get("http://localhost:8081/clientApi/1/search?appid=1&query=benuron")
+                .get("http://localhost:8081/clientApi/1/products?appid=1&query=benuron")
                 .then()
                 .assertThat()
                 .and().statusCode(200)

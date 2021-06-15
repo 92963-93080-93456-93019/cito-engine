@@ -41,7 +41,7 @@ public class Product {
 	private Long id;
 	private String name;
 	@ManyToOne
-	@JoinColumn(name = "appId") // An App has many products (foreign key)
+	@JoinColumn(name = "appid") // An App has many products (foreign key)
 	private App app;
 	private String category;
 	private String description;

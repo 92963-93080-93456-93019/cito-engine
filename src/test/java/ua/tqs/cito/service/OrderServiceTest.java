@@ -90,7 +90,7 @@ public class OrderServiceTest {
         given( consumerRepository.findByConsumerId(clientId)).willReturn(c1);
         given( orderRepository.findOrdersByEndConsumer(c1)).willReturn(orders);
 
-        ResponseEntity<Object> r = orderService.getOrders(clientId,appid);
+        ResponseEntity<Object> r = orderService.getOrdersForConsumer(clientId,appid);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
         assertThat(r.getBody(), is(orders));
@@ -102,7 +102,7 @@ public class OrderServiceTest {
         Long appid = 1L;
         given( appRepository.findByAppid(appid)).willReturn(null);
 
-        ResponseEntity<Object> r = orderService.getOrders(clientId,appid);
+        ResponseEntity<Object> r = orderService.getOrdersForConsumer(clientId,appid);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -120,7 +120,7 @@ public class OrderServiceTest {
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( consumerRepository.findByConsumerId(clientId)).willReturn(null);
 
-        ResponseEntity<Object> r = orderService.getOrders(clientId,appid);
+        ResponseEntity<Object> r = orderService.getOrdersForConsumer(clientId,appid);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -490,8 +490,8 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void whenUpdateOrders_ReturnOK() {
-        Long RiderId = 1L;
+    public void whenUpdateOrders_ReturnOK() throws JsonProcessingException {
+        Long riderId = 1L;
         Long appid = 1L;
         Long orderId = 1L;
 
@@ -510,27 +510,32 @@ public class OrderServiceTest {
 
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( riderRepository.findByRiderId(r1.getRiderId())).willReturn(r1);
-        given( orderRepository.getById(orderId)).willReturn(o1);
+        given( orderRepository.findById(orderId)).willReturn(Optional.of(o1));
 
-        ResponseEntity<Object> r = orderService.updateOrder(RiderId,appid,orderId,"GOING_TO_BUY");
+        String request = "{\"orderId\":1,\"status\":\"GOING_TO_BUY\"}";
+        JsonNode payload = objectMapper.readTree(request);
 
+        ResponseEntity<Object> r = orderService.updateOrder(riderId,payload);
+        System.out.println(r.toString());
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
 
         assertThat(r.getBody(), is(HttpResponses.ORDER_UPDATED.replace("#", "GOING_TO_BUY")));
     }
 
     @Test
-    public void whenUpdateOrdersWithInvalidRider_ReturnForbidden() {
-        Long RiderId = 1L;
+    public void whenUpdateOrdersWithInvalidRider_ReturnForbidden() throws JsonProcessingException {
+        Long riderId = 1L;
         Long appid = 1L;
-        Long orderId = 1L;
 
         App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
 
         given( appRepository.findByAppid(appid)).willReturn(app);
-        given( riderRepository.findByRiderId(RiderId)).willReturn(null);
+        given( riderRepository.findByRiderId(riderId)).willReturn(null);
 
-        ResponseEntity<Object> r = orderService.updateOrder(RiderId,appid,orderId,"GOING_TO_BUY");
+        String request = "{\"orderId\":1,\"status\":\"GOING_TO_BUY\"}";
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = orderService.updateOrder(riderId,payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -538,23 +543,8 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void whenUpdateOrdersWithInvalidAPP_ReturnForbidden() {
-        Long RiderId = 1L;
-        Long appid = 1L;
-        Long orderId = 1L;
-
-        given( appRepository.findByAppid(appid)).willReturn(null);
-
-        ResponseEntity<Object> r = orderService.updateOrder(RiderId,appid,orderId,"GOING_TO_BUY");
-
-        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
-
-        assertThat(r.getBody(), is(HttpResponses.INVALID_APP));
-    }
-
-    @Test
-    public void whenUpdateOrdersWithInvalidSTATUS_ReturnForbidden() {
-        Long RiderId = 1L;
+    public void whenUpdateOrdersWithInvalidSTATUS_ReturnForbidden() throws JsonProcessingException {
+        Long riderId = 1L;
         Long appid = 1L;
         Long orderId = 1L;
 
@@ -573,11 +563,12 @@ public class OrderServiceTest {
 
         given( appRepository.findByAppid(appid)).willReturn(app);
         given( riderRepository.findByRiderId(r1.getRiderId())).willReturn(r1);
-        given( orderRepository.getById(orderId)).willReturn(o1);
+        given( orderRepository.findById(orderId)).willReturn(Optional.of(o1));
 
+        String request = "{\"orderId\":1,\"status\":\"INVALID_STATUS\"}";
+        JsonNode payload = objectMapper.readTree(request);
 
-
-        ResponseEntity<Object> r = orderService.updateOrder(RiderId,appid,orderId,"INVALID_STATUS");
+        ResponseEntity<Object> r = orderService.updateOrder(riderId,payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 

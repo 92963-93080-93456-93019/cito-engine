@@ -157,7 +157,7 @@ public class ProductServiceTest {
     	given( consumerRepository.findByConsumerId(consumerId)).willReturn(c);
     	given( productRepository.findByApp(app)).willReturn(ar);
         
-        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid);
+        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid,null);
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
         verify(productRepository, VerificationModeFactory.times(1)).findByApp(app);
@@ -171,7 +171,7 @@ public class ProductServiceTest {
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
     	Consumer c = new Consumer(1L,"Tiago","Oliveira","912318734","Rua do Corvo 455",app);
         
-        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid);
+        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid,null);
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.NOT_FOUND)));
         assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid appId.\"}"));
@@ -186,7 +186,7 @@ public class ProductServiceTest {
         
     	given( appRepository.findByAppid(appid)).willReturn(app);
     	
-        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid);
+        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid,null);
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
         assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid clientId.\"}"));

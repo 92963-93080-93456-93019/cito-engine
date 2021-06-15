@@ -54,7 +54,7 @@ public class RiderService {
         if(longitude>180 || longitude <-180)
             return new ResponseEntity<>(HttpResponses.RIDER_LOCATION_INVALID, HttpStatus.FORBIDDEN);
 
-        r1.setLatitutde(latitude);
+        r1.setLatitude(latitude);
         r1.setLongitude(longitude);
 
         return new ResponseEntity<>(HttpResponses.RIDER_LOCATION_UPDATED, HttpStatus.OK);

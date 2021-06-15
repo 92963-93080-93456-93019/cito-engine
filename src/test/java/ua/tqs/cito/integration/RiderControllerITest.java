@@ -9,8 +9,13 @@ public class RiderControllerITest {
 
     @Test
     public void whenUpdatingOrder_thenReturnUpdated( ){
+
+        String response = "{\"orderId\":2,\"status\":\"GOING_TO_BUY\"}";
+
         RestAssured
-                .get("http://localhost:8081/riderApi/1/order/update?riderId=1&appid=1&orderId=1&status=GOING_TO_BUY")
+                .given()
+                .contentType("application/json")
+                .body(response).post("http://localhost:8081/riderApi/1/orders")
         .then()
                 .assertThat()
                 .statusCode(200)
@@ -18,19 +23,28 @@ public class RiderControllerITest {
     }
 
     @Test
-    public void whenGetingOrderWithInvalidApp_thenReturnForbidden( ) {
+    public void whenUpdatingOrderWithInvalidStatus_thenReturnForbidden( ) {
+
+        String response = "{\"orderId\":2,\"status\":\"INVALID_STATUS\"}";
 
         RestAssured
-                .get("http://localhost:8081/riderApi/1/order/update?riderId=1&appid=0&orderId=1&status=GOING_TO_BUY")
+                .given()
+                .contentType("application/json")
+                .body(response).post("http://localhost:8081/riderApi/1/orders")
         .then()
                 .assertThat()
-                .statusCode(403).and().body("message",equalTo("Invalid appId."));
+                .statusCode(403).and().body("message",equalTo("Status invalid."));
     }
 
     @Test
     public void whenUpdatingOrderWithInvalidRiderId_thenReturnForbidden( ) {
+
+        String response = "{\"orderId\":2,\"status\":\"GOING_TO_BUY\"}";
+
         RestAssured
-                .get("http://localhost:8081/riderApi/20/order/update?riderId=20&appid=1&orderId=1&status=GOING_TO_BUY")
+                .given()
+                .contentType("application/json")
+                .body(response).post("http://localhost:8081/riderApi/20/orders")
         .then()
                 .assertThat()
                 .statusCode(403)
@@ -73,7 +87,7 @@ public class RiderControllerITest {
         RestAssured
                 .given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/1/available")
+                .body(response).post("http://localhost:8081/riderApi/1/availability")
                 .then()
                 .assertThat()
                 .statusCode(200)

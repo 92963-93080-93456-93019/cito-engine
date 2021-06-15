@@ -344,7 +344,7 @@ public class OrderServiceTest {
         given( productRepository.findById(3L)).willReturn(opt1);
         given( productRepository.findById(4L)).willReturn(opt2);
 
-        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
+        String request = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":4,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Fatima\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": \"\"}}";
         JsonNode payload = objectMapper.readTree(request);
 
         ResponseEntity<Object> r = orderService.registerOrder(clientId,appid,payload);
@@ -464,7 +464,7 @@ public class OrderServiceTest {
         Rider r1 = new Rider(1L,"Dinis","Cruz","912223334","Mercedes","00-00-00");
         Rider r2 = new Rider(2L,"Tiago","Oliveira","912223333","Ford","11-11-11");
         r1.setLongitude(50.0);
-        r1.setLatitutde(50.0);
+        r1.setLatitude(50.0);
         r2.setLongitude(80.0);
         r2.setLongitude(-60.0);
         riders.add(r1);

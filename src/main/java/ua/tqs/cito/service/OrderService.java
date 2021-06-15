@@ -106,6 +106,7 @@ public class OrderService {
             return new ResponseEntity<>(HttpResponses.NO_RIDERS_AVAILABLE, HttpStatus.NOT_FOUND);
 
         Order o1 = new Order(prods,c, OrderStatusEnum.PENDING,app,address,latitude,longitude);
+        o1.setRider(r1);
         orderRepository.save(o1);
         return new ResponseEntity<>(HttpResponses.ORDER_SAVED, HttpStatus.CREATED);
     }
@@ -198,16 +199,17 @@ public class OrderService {
         double distance = 0.0;
 
         for(Rider r:riders){
+            System.out.println(r.toString());
             if(distance == 0.0){
-                distance = calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude());
+                distance = calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude());
                 r1 = r;
             }
             else{
                 System.out.println("entrou");
                 System.out.println("distanceold" + distance);
-                System.out.println("distance new" + calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude()));
-                if(calculateDistance(latitude,longitude,r.getLatitutde(),r.getLongitude())<distance) {
-                    distance = calculateDistance(latitude, longitude, r.getLatitutde(), r.getLongitude());
+                System.out.println("distance new" + calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude()));
+                if(calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude())<distance) {
+                    distance = calculateDistance(latitude, longitude, r.getLatitude(), r.getLongitude());
                     r1 = r;
                 }
             }
@@ -219,6 +221,7 @@ public class OrderService {
     }
 
     public double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
+        System.out.println("ntrei");
         double earthRadius = 6371000; //meters
         double dLat = Math.toRadians(lat2-lat1);
         double dLng = Math.toRadians(lng2-lng1);

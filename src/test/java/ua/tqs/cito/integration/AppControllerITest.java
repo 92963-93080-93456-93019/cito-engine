@@ -24,7 +24,7 @@ public class AppControllerITest {
     @Test
     public void whenRegisterOrder_thenReturnCreated(){
 
-        String response = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":5,\"quantity\":3}],\"info\":{\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true}}";
+        String response = "{\"products\":[{\"id\":3,\"quantity\":2},{\"id\":5,\"quantity\":3}],\"info\":{\"latitude\":50,\"longitude\":50,\"appid\":1,\"userId\":1,\"deliveryAddress\":\"Rua do corvo\",\"deliverInPerson\":true,\"latitude\": 50.0,\"longitude\": 50.0}}";
 
         RestAssured
                 .given()

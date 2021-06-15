@@ -28,7 +28,7 @@ public class Rider {
     private String vehicleName;
     private String vehicleLicense;
     private Boolean ifAvailable=true;
-    private Double latitutde;
+    private Double latitude;
     private Double longitude;
 
     public Rider(String fname, String lname, String fnumber,String vehicleName,String vehicleLicense) {
@@ -39,7 +39,7 @@ public class Rider {
         this.vehicleName=vehicleName;
         this.vehicleLicense=vehicleLicense;
         this.reps = new ArrayList<>();
-        this.latitutde=0.0;
+        this.latitude=0.0;
         this.longitude=0.0;
     }
 
@@ -52,7 +52,7 @@ public class Rider {
         this.riderId=riderId;
         this.vehicleLicense=vehicleLicense;
         this.vehicleName=vehicleName;
-        this.latitutde=0.0;
+        this.latitude=0.0;
         this.longitude=0.0;
     }
 

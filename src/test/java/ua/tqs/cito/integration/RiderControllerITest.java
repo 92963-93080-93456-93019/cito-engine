@@ -10,7 +10,7 @@ public class RiderControllerITest {
     @Test
     public void whenUpdatingOrder_thenReturnUpdated( ){
         RestAssured
-                .get("http://localhost:8081/riderApi/1/order/update?riderId=1&appid=1&orderId=1&status=GOING_TO_BUY")
+                .get("http://localhost:8081/riderApi/1/order/update?riderId=1&appid=1&orderId=4&status=GOING_TO_BUY")
         .then()
                 .assertThat()
                 .statusCode(200)

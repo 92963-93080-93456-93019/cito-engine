@@ -6,20 +6,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.tqs.cito.service.OrderService;
 import ua.tqs.cito.service.ProductService;
-import ua.tqs.cito.service.SearchService;
 
 
-@Controller
+@RestController
 @Tag(name = "Client", description = "the client API")
 @RequestMapping("/clientApi")
+@CrossOrigin(origins = "*")
 public class AppController {
-
-	@Autowired
-	private SearchService searchService;
 
 	@Autowired
 	private OrderService orderService;
@@ -27,16 +23,9 @@ public class AppController {
 	@Autowired
 	private ProductService productService;
 
-	// Client searches for products
-	@Operation(summary = "SHow products by a query.")
-	@GetMapping(value="{consumerId}/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getProductsByQuery(@PathVariable Long consumerId, Long appid, String query) {
-		return searchService.getProductsByQuery(consumerId, appid, query);
-	}
-
 	// Client registers an order
 	@Operation(summary = "Register an order.")
-	@PostMapping(value="{consumerId}/order/register",produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="{consumerId}/orders",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> registerOrder(@PathVariable Long consumerId, Long appid, @RequestBody JsonNode payload) {
 		return orderService.registerOrder(consumerId, appid, payload);
 	}
@@ -45,14 +34,14 @@ public class AppController {
 	@Operation(summary = "Show orders of a consumer.")
 	@GetMapping(value= "{consumerId}/orders",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getOrders(@PathVariable Long consumerId, Long appid){
-		return orderService.getOrders(consumerId, appid);
+		return orderService.getOrdersForConsumer(consumerId, appid);
 	}
 
-	// Client gets all products of app
+	// Client gets all products of app or filtered by search query by name
 	@Operation(summary = "Show products of a consumer.")
 	@GetMapping(value="{consumerId}/products",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getAllProducts(@PathVariable Long consumerId, Long appid) {
-		return productService.getAllProductsForClient(consumerId, appid);
+	public ResponseEntity<Object> getAllProductsForClient(@PathVariable Long consumerId, Long appid, String query) {
+		return productService.getAllProductsForClient(consumerId, appid, query);
 	}
 
 	// Client rates a Rider

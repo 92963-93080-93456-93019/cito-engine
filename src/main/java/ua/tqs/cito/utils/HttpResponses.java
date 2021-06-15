@@ -4,6 +4,7 @@ public class HttpResponses {
     public static final String INVALID_APP = "{\"code\" : 403, \"message\" : \"Invalid appId.\"}";
     public static final String INVALID_CONSUMER = "{\"code\" : 403, \"message\" : \"Invalid clientId.\"}";
     public static final String INVALID_RIDER = "{\"code\" : 403, \"message\" : \"Invalid rider.\"}";
+    public static final String INVALID_ORDER = "{\"code\" : 403, \"message\" : \"Invalid orderId.\"}";
     public static final String INSUFFICIENT_PRODUCTS = "{\"code\" : 403, \"message\" : \"Order with insufficient products (0).\"}";
     public static final String INVALID_PRODUCT = "{\"code\" : 403, \"message\" : \"Invalid productId (#).\"}";
     public static final String INVALID_ADDRESS = "{\"code\" : 403, \"message\" : \"No delivery address provided.\"}";

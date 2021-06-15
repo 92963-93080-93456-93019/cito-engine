@@ -37,9 +37,9 @@ public class OrderServiceUnitTest {
         Rider r1 = new Rider(1L,"Dinis","Cruz","912223334","Mercedes","00-00-00");
         Rider r2 = new Rider(2L,"Tiago","Oliveira","912223333","Ford","11-11-11");
 
-        r1.setLatitutde(51.0);
+        r1.setLatitude(51.0);
         r1.setLongitude(51.0);
-        r2.setLatitutde(52.0);
+        r2.setLatitude(52.0);
         r2.setLongitude(52.0);
 
         List<Rider> riders = new ArrayList<>();

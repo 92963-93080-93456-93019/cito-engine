@@ -33,6 +33,9 @@ public class UserRegisterServiceTest {
     @Mock
     private RiderRepository riderRepository;
 
+    @Mock
+    private ManagerRepository managerRepository;
+
     @InjectMocks
     private UserRegisterService userRegisterService;
 
@@ -193,4 +196,103 @@ public class UserRegisterServiceTest {
         assertThat(r.getBody(), is(HttpResponses.RIDER_SAVED));
     }
 
+    @Test
+    public void whenRegisterManagerWithNoFnameReturnForbidden() throws JsonProcessingException {
+
+        String request= "{\n" +
+                "    \"fname\":\"\",\n" +
+                "\n\"lname\": \"Oliveira\",\n" +
+                "\n\"address\": \"Rua fixe\",\n" +
+                "\n\"phone\": \"919191785\"\n" +
+                "}";
+
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_MANAGER_FIRSTNAME));
+    }
+
+    @Test
+    public void whenRegisterManagerWithNoLnameReturnForbidden() throws JsonProcessingException {
+
+        String request= "{\n" +
+                "    \"fname\":\"Tiago\",\n" +
+                "\n\"lname\": \"\",\n" +
+                "\n\"address\": \"Rua fixe\",\n" +
+                "\n\"phone\": \"919191785\"\n" +
+                "}";
+
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_MANAGER_LASTNAME));
+    }
+
+
+    @Test
+    public void whenRegisterManagerWithNoAddressReturnForbidden() throws JsonProcessingException {
+
+        String request= "{\n" +
+                "    \"fname\":\"Tiago\",\n" +
+                "\n\"lname\": \"Oliveira\",\n" +
+                "\n\"address\": \"\",\n" +
+                "\n\"phone\": \"919191785\"\n" +
+                "}";
+
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_MANAGER_ADDRESS));
+    }
+
+    @Test
+    public void whenRegisterManagerWithNoPhoneReturnForbidden() throws JsonProcessingException {
+
+        String request= "{\n" +
+                "    \"fname\":\"Tiago\",\n" +
+                "\n\"lname\": \"Oliveira\",\n" +
+                "\n\"address\": \"Rua fixe\",\n" +
+                "\n\"phone\": \"\"\n" +
+                "}";
+
+        JsonNode payload = objectMapper.readTree(request);
+
+        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_MANAGER_PHONE));
+    }
+
+    @Test
+    public void whenRegisterManagerReturnCreated() throws JsonProcessingException {
+
+        String request= "{\n" +
+                "    \"fname\":\"Tiago\",\n" +
+                "\n\"lname\": \"Oliveira\",\n" +
+                "\n\"address\": \"Rua fixe\",\n" +
+                "\n\"phone\": \"919191785\"\n" +
+                "}";
+
+        JsonNode payload = objectMapper.readTree(request);
+
+        Manager m1 = new Manager("Tiago","Oliveira","Rua fixe","919191785");
+
+        given(managerRepository.save(m1)).willReturn(m1);
+
+        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.CREATED)));
+
+        assertThat(r.getBody(), is(HttpResponses.MANAGER_SAVED));
+    }
 }

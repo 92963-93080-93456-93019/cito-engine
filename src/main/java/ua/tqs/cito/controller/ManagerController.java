@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.tqs.cito.model.Product;
 import ua.tqs.cito.service.AppService;
 import ua.tqs.cito.service.ProductService;
+import ua.tqs.cito.service.UserRegisterService;
 
 @RestController
 @Tag(name = "Manager", description = "the Manager API")
@@ -22,6 +23,9 @@ public class ManagerController {
 
     @Autowired
     private AppService appService;
+
+    @Autowired
+    private UserRegisterService userRegisterService;
 
     // Manager registers a product
     @Operation(summary = "Manager registers a product.")
@@ -38,9 +42,17 @@ public class ManagerController {
     }
 
     // Manager registers his app
+    @Operation(summary = "Register a app in the platform.")
     @PostMapping("{managerId}/app/register")
     public ResponseEntity<Object> registerApp(@PathVariable Long managerId,@RequestBody JsonNode payload) {
         return appService.registerApp(managerId, payload);
+    }
+
+    // Register a manager in the platform.
+    @Operation(summary = "Register a manager in the platform.")
+    @PostMapping(value="/register",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> registerManager(@RequestBody JsonNode payload){
+        return userRegisterService.registerManager(payload);
     }
 
 }

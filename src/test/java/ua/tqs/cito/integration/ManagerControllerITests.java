@@ -98,4 +98,24 @@ public class ManagerControllerITests {
 
 	}
 
+	@Test
+	public void whenRegisterManagerReturnCreated() {
+
+		String request = "{\n" +
+				"    \"fname\":\"Tiago\",\n" +
+				"    \"lname\": \"Oliveira\",\n" +
+				"    \"address\": \"Rua fixe\",\n" +
+				"    \"phone\": \"919191785\"\n" +
+				"}";
+
+		RestAssured
+				.given()
+				.contentType("application/json")
+				.body(request).post("http://localhost:8081/managerApi/register")
+				.then()
+				.assertThat()
+				.statusCode(201);
+
+	}
+
 }

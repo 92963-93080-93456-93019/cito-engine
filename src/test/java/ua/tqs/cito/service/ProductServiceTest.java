@@ -53,7 +53,8 @@ public class ProductServiceTest {
     	Long appid = 1L;
     	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
-    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus",app);
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
     	
     	given( appRepository.findByAppid(appid)).willReturn(app);
     	given( managerRepository.findManagerByApp(app)).willReturn(m);
@@ -99,7 +100,8 @@ public class ProductServiceTest {
     	Long appid = 1L;
     	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
-    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus",app);
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
     	ArrayList<Product> ar = new ArrayList<>();
     	ar.add(p);
     	
@@ -119,7 +121,8 @@ public class ProductServiceTest {
     	Long appid = 1L;
     	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
-    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus",app);
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
 
         
         ResponseEntity<Object> r_get = productService.getAllProducts(managerId,appid);

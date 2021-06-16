@@ -233,16 +233,11 @@ public class OrderService {
                 r1 = r;
             }
             else{
-                System.out.println("entrou");
-                System.out.println("distanceold" + distance);
-                System.out.println("distance new" + calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude()));
                 if(calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude())<distance) {
                     distance = calculateDistance(latitude, longitude, r.getLatitude(), r.getLongitude());
                     r1 = r;
                 }
             }
-            System.out.println(r1.toString());
-            System.out.println(distance);
         }
 
         return r1;

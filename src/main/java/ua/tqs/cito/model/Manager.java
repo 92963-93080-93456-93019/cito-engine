@@ -24,14 +24,15 @@ public class Manager {
     @ManyToOne
     @JoinColumn(name = "appId") // An App has many managers (foreign key)
     private App app;
-	public Manager(Long managerId2, String string, String string2, String string3, String string4, App app2) {
-	    managerId = managerId2;
-	    fname = string;
-	    lname = string2;
-	    phone = string3;
-	    address = string4;
-	    app = app2;
+	public Manager(Long managerId, String fname, String lname, String phone, String address) {
+		this.managerId = managerId;
+		this.fname = fname;
+		this.lname = lname;
+		this.phone = phone;
+		this.address = address;
+		this.app=null;
 	}
+
 	public Long getManagerId() {
 		return managerId;
 	}

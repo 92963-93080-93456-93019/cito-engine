@@ -25,6 +25,14 @@ public class App {
         this.image = image;
     }
 
+	public App(Double tax, String name, String address, String schedule, String image) {
+		this.tax = tax;
+		this.name = name;
+		this.address = address;
+		this.schedule = schedule;
+		this.image = image;
+	}
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long appid;

@@ -23,4 +23,11 @@ public class HttpResponses {
     public static final String ORDER_LOCATION_INVALID = "{\"code\" : 403, \"message\" : \"Order location invalid.\"}";
     public static final String RIDER_LOCATION_UPDATED = "{\"code\" : 200, \"message\" : \"Rider location updated.\"}";
     public static final String NO_RIDERS_AVAILABLE = "{\"code\" : 404, \"message\" : \"There are no riders.\"}";
+    public static final String INVALID_MANAGER = "{\"code\" : 403, \"message\" : \"Invalid managerId.\"}";
+    public static final String INVALID_TAX = "{\"code\" : 403, \"message\" : \"Invalid tax for app.\"}";
+    public static final String INVALID_NAME = "{\"code\" : 403, \"message\" : \"Invalid name for app.\"}";
+    public static final String INVALID_APP_ADDRESS = "{\"code\" : 403, \"message\" : \"Invalid address for app.\"}";
+    public static final String INVALID_IMAGE = "{\"code\" : 403, \"message\" : \"Invalid image for app.\"}";
+    public static final String INVALID_SCHEDULE = "{\"code\" : 403, \"message\" : \"Invalid schedule for app.\"}";
+    public static final String APP_CREATED = "{\"code\" : 201, \"message\" : \"App created.\"}";
 }

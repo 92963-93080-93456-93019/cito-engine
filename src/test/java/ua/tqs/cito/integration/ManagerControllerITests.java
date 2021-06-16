@@ -77,4 +77,25 @@ public class ManagerControllerITests {
 					.body(equalTo(HttpResponses.PRODUCT_NOT_SAVED));
 	}
 
+	@Test
+	public void whenRegisterAppthenReturnCreated() {
+
+		String request = "{\n" +
+				"    \"tax\":50,\n" +
+				"    \"name\": \"appfixe\",\n" +
+				"    \"address\": \"Rua fixe\",\n" +
+				"    \"schedule\": \"24/7\",\n" +
+				"    \"image\":\"imagemfixe\"\n" +
+				"}";
+
+		RestAssured
+				.given()
+				.contentType("application/json")
+				.body(request).post("http://localhost:8081/managerApi/1/app/register")
+				.then()
+				.assertThat()
+				.statusCode(201);
+
+	}
+
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ua.tqs.cito.model.*;
 import ua.tqs.cito.repository.AppRepository;
 import ua.tqs.cito.repository.ManagerRepository;
+import ua.tqs.cito.repository.OrderRepository;
 import ua.tqs.cito.utils.HttpResponses;
 import ua.tqs.cito.utils.OrderStatusEnum;
 
@@ -19,6 +20,9 @@ public class AppService {
 
     @Autowired
     private AppRepository appRepository;
+
+    @Autowired
+    private OrderRepository orderRepositoryy;
 
     @Autowired
     private ManagerRepository managerRepository;
@@ -60,8 +64,32 @@ public class AppService {
         return new ResponseEntity<>(HttpResponses.APP_CREATED, HttpStatus.CREATED);
     }
 
+    public ResponseEntity<Object> getRevenue(Long appid) {
+        double revenue = 0;
+
+        if (checkAppId(appid))
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
+
+        App app = appRepository.findByAppid(appid);
+
+        List<Order> orders = orderRepositoryy.findOrdersByApp(app);
+
+        if(orders.size()!=0){
+            for(Order o:orders){
+                revenue = revenue + o.getPrice();
+            }
+        }
+
+        return new ResponseEntity<>(revenue, HttpStatus.OK);
+    }
+
     // Check if manager exists
     private boolean checkManagerId(Long managerId) {
         return managerRepository.findByManagerId(managerId) != null;
+    }
+
+    // Check if app exists
+    private boolean checkAppId(Long appId) {
+        return appRepository.findByAppid(appId) == null;
     }
 }

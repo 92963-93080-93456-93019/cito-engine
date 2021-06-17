@@ -23,6 +23,6 @@ jobs:
           java-version: 11.0.4
 
       - name: SonarCloud Scan
-        run: mvn -B clean package install verify -Psonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn -B clean package verify -Psonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

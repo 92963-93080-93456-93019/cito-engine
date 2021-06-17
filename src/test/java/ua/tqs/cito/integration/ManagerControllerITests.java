@@ -20,7 +20,6 @@ import ua.tqs.cito.model.Product;
 import ua.tqs.cito.service.ProductService;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -116,17 +115,6 @@ public class ManagerControllerITests {
 				.then()
 				.assertThat()
 				.statusCode(201);
-
-	}
-
-	@Test
-	public void whenGetRevenueReturnRevenue() {
-
-		RestAssured
-				.get("http://localhost:8081/managerApi/1/revenue")
-				.then()
-				.assertThat()
-				.and().statusCode(200);
 
 	}
 

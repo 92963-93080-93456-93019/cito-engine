@@ -67,7 +67,7 @@ public class UserRegisterService {
             return new ResponseEntity<>(HttpResponses.INVALID_MANAGER_ADDRESS, HttpStatus.FORBIDDEN);
         }
 
-        Manager m1 = new Manager(1L,payload.path("fname").asText(), payload.path("fname").asText(),payload.path("phone").asText(), payload.path("address").asText());
+        Manager m1 = new Manager(payload.path("fname").asText(), payload.path("fname").asText(),payload.path("phone").asText(), payload.path("address").asText());
         managerRepository.save(m1);
         return new ResponseEntity<>(HttpResponses.MANAGER_SAVED, HttpStatus.CREATED);
     }

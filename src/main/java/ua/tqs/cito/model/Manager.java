@@ -33,6 +33,14 @@ public class Manager {
 		this.app=null;
 	}
 
+	public Manager(String fname, String lname, String phone, String address) {
+		this.fname = fname;
+		this.lname = lname;
+		this.phone = phone;
+		this.address = address;
+		this.app=null;
+	}
+
 	public Long getManagerId() {
 		return managerId;
 	}

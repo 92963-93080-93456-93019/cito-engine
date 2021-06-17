@@ -30,4 +30,9 @@ public class HttpResponses {
     public static final String INVALID_IMAGE = "{\"code\" : 403, \"message\" : \"Invalid image for app.\"}";
     public static final String INVALID_SCHEDULE = "{\"code\" : 403, \"message\" : \"Invalid schedule for app.\"}";
     public static final String APP_CREATED = "{\"code\" : 201, \"message\" : \"App created.\"}";
+    public static final String INVALID_MANAGER_FIRSTNAME = "{\"code\" : 403, \"message\" : \"Invalid manager first name.\"}";
+    public static final String INVALID_MANAGER_LASTNAME = "{\"code\" : 403, \"message\" : \"Invalid manager last name.\"}";
+    public static final String INVALID_MANAGER_PHONE = "{\"code\" : 403, \"message\" : \"Invalid manager phone.\"}";
+    public static final String INVALID_MANAGER_ADDRESS = "{\"code\" : 403, \"message\" : \"Invalid manager address.\"}";
+    public static final String MANAGER_SAVED = "{\"code\" : 201, \"message\" : \"Manager saved.\"}";
 }

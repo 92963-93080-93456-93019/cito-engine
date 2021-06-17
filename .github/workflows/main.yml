@@ -21,6 +21,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0.4
+           
+      - name: Teste dependencias
+        run: mvn --batch-mode --update-snapshots verify 
+
       - name: SonarCloud Scan
         run: mvn -B clean install verify -Psonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:

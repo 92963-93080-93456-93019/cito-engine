@@ -6,7 +6,7 @@ on:
       - "master"
       - "develop"
   pull_request:
-      types: [closed, review_requested]
+      types: [review_requested]
       branches:
         - "master"
         - "develop"  

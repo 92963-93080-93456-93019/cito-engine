@@ -139,24 +139,59 @@
 							</execution>
 						</executions>
 					</plugin>
-					  <plugin>
-					    <groupId>org.jacoco</groupId>
-					    <artifactId>jacoco-maven-plugin</artifactId>
-					    <version>0.6.0.201210061924</version>
-					    <configuration>
-						<destFile>${sonar.jacoco.reportPath}</destFile>
-						<append>true</append>
-					    </configuration>
-					    <executions>
-						<execution>
-						    <id>agent</id>
-						    <goals>
-							<goal>prepare-agent</goal>
-						    </goals>
-						</execution>
-					    </executions>
+				</plugins>
+				<profile>
+			<id>sonar</id>
+			<properties>
+				
+				<sonar.projectKey>92963-93080-93456-93019_cito-engine</sonar.projectKey>
+				<sonar.organization>92963-93080-93456-93019-1</sonar.organization>
+				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonarsource.scanner.maven</groupId>
+						<artifactId>sonar-maven-plugin</artifactId>
+						<version>3.8.0.2131</version>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>sonar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.22.2</version>
+					</plugin>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.6</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
+			</build>
+		</profile>
 			</build>
 		</profile>
 		<profile>

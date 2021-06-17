@@ -227,19 +227,20 @@ public class OrderService {
 
         double distance = 0.0;
 
+
         for(Rider r:riders){
             if(distance == 0.0){
                 distance = calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude());
                 r1 = r;
             }
             else{
+                System.out.println(r);
                 if(calculateDistance(latitude,longitude,r.getLatitude(),r.getLongitude())<distance) {
                     distance = calculateDistance(latitude, longitude, r.getLatitude(), r.getLongitude());
                     r1 = r;
                 }
             }
         }
-
         return r1;
     }
 

@@ -19,7 +19,10 @@ public class UserRegisterService {
     @Autowired
     private RiderRepository riderRepository;
 
-    public ResponseEntity<Object> register(JsonNode payload) {
+    @Autowired
+    private ManagerRepository managerRepository;
+
+    public ResponseEntity<Object> registerRider(JsonNode payload) {
 
         if (payload.path("vehicle").path("name").asText().equals("")) {
             return new ResponseEntity<>(HttpResponses.INVALID_VEHICLE, HttpStatus.FORBIDDEN);
@@ -42,9 +45,33 @@ public class UserRegisterService {
         }
 
         Rider r1 = new Rider(payload.path("rider").path("fname").asText(), payload.path("rider").path("lname").asText(), payload.path("rider").path("fnumber").asText(), payload.path("vehicle").path("name").asText(), payload.path("vehicle").path("license").asText());
-        System.out.println(r1.toString());
         riderRepository.save(r1);
         return new ResponseEntity<>(HttpResponses.RIDER_SAVED, HttpStatus.CREATED);
     }
+
+    public ResponseEntity<Object> registerManager(JsonNode payload) {
+
+        if (payload.path("fname").asText().equals("")) {
+            return new ResponseEntity<>(HttpResponses.INVALID_MANAGER_FIRSTNAME, HttpStatus.FORBIDDEN);
+        }
+
+        if (payload.path("lname").asText().equals("")) {
+            return new ResponseEntity<>(HttpResponses.INVALID_MANAGER_LASTNAME, HttpStatus.FORBIDDEN);
+        }
+
+        if (payload.path("phone").asText().equals("")) {
+            return new ResponseEntity<>(HttpResponses.INVALID_MANAGER_PHONE, HttpStatus.FORBIDDEN);
+        }
+
+        if (payload.path("address").asText().equals("")) {
+            return new ResponseEntity<>(HttpResponses.INVALID_MANAGER_ADDRESS, HttpStatus.FORBIDDEN);
+        }
+
+        Manager m1 = new Manager(payload.path("fname").asText(), payload.path("fname").asText(),payload.path("phone").asText(), payload.path("address").asText());
+        managerRepository.save(m1);
+        return new ResponseEntity<>(HttpResponses.MANAGER_SAVED, HttpStatus.CREATED);
+    }
+
+    
 
 }

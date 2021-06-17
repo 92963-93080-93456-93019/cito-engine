@@ -14,9 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -49,13 +47,14 @@ public class ProductServiceTest {
 	@InjectMocks
 	private ProductService productService;
     
-    /*@Test
+    @Test
     public void whenCreateValidproductCreateIt() {
     	Long managerId = 1L;
     	Long appid = 1L;
     	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
-    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus",app);
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
     	
     	given( appRepository.findByAppid(appid)).willReturn(app);
     	given( managerRepository.findManagerByApp(app)).willReturn(m);
@@ -101,7 +100,8 @@ public class ProductServiceTest {
     	Long appid = 1L;
     	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
-    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus",app);
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
     	ArrayList<Product> ar = new ArrayList<>();
     	ar.add(p);
     	
@@ -121,7 +121,8 @@ public class ProductServiceTest {
     	Long appid = 1L;
     	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
-    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus",app);
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
 
         
         ResponseEntity<Object> r_get = productService.getAllProducts(managerId,appid);
@@ -159,7 +160,7 @@ public class ProductServiceTest {
     	given( consumerRepository.findByConsumerId(consumerId)).willReturn(c);
     	given( productRepository.findByApp(app)).willReturn(ar);
         
-        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid);
+        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid,null);
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
         verify(productRepository, VerificationModeFactory.times(1)).findByApp(app);
@@ -173,7 +174,7 @@ public class ProductServiceTest {
     	Product p = new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string");
     	Consumer c = new Consumer(1L,"Tiago","Oliveira","912318734","Rua do Corvo 455",app);
         
-        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid);
+        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid,null);
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.NOT_FOUND)));
         assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid appId.\"}"));
@@ -188,11 +189,11 @@ public class ProductServiceTest {
         
     	given( appRepository.findByAppid(appid)).willReturn(app);
     	
-        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid);
+        ResponseEntity<Object> r_get = productService.getAllProductsForClient(consumerId,appid,null);
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
         assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid clientId.\"}"));
-    }*/
+    }
 	
 	
 }

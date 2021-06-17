@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,15 @@ public class App {
         this.image = image;
     }
 
+	public App(Double tax, String name, String address, String schedule, String image) {
+		this.tax = tax;
+		this.name = name;
+		this.address = address;
+		this.schedule = schedule;
+		this.image = image;
+		System.out.println("delete this print");
+	}
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long appid;
@@ -31,8 +41,6 @@ public class App {
     private String name;
     private String address;
     private String schedule;
-    @OneToMany(mappedBy = "app")
-    private List<Manager> managers;
 
     @Lob
     private String image;
@@ -77,14 +85,6 @@ public class App {
 		this.schedule = schedule;
 	}
 
-	public List<Manager> getManagers() {
-		return managers;
-	}
-
-	public void setManagers(List<Manager> managers) {
-		this.managers = managers;
-	}
-
 	public String getImage() {
 		return image;
 	}
@@ -92,7 +92,5 @@ public class App {
 	public void setImage(String image) {
 		this.image = image;
 	}
-
-
 
 }

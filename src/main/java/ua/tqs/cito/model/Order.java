@@ -7,9 +7,7 @@ import lombok.ToString;
 import ua.tqs.cito.utils.OrderStatusEnum;
 
 import javax.persistence.*;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -44,7 +42,13 @@ public class Order {
 
     private String address;
 
-    public Order(List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum orderStatusEnum, App app, String address){
+
+    private Double latitude;
+
+    private Double longitude;
+
+    public Order(List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum orderStatusEnum, App app, String address,Double latitude, Double longitude){
+
         this.productListItems=productListItems;
         this.endConsumer=endConsumer;
         this.orderStatusEnum = orderStatusEnum.PENDING;
@@ -55,9 +59,13 @@ public class Order {
             this.price = this.price + p.getProduct().getPrice()*p.getQuantity();
         }
         this.address=address;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
-    public Order(Long orderId, List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum orderStatusEnum, App app, String address){
+
+    public Order(Long orderId, List<ProductListItem> productListItems, Consumer endConsumer, OrderStatusEnum orderStatusEnum, App app, String address, Double latitude, Double longitude){
+
         this.productListItems=productListItems;
         this.endConsumer=endConsumer;
         this.orderStatusEnum = orderStatusEnum.PENDING;
@@ -69,6 +77,8 @@ public class Order {
         }
         this.address=address;
         this.orderId=orderId;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
 }

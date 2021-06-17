@@ -18,35 +18,41 @@ public class Rider {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long riderId;
-
     private String fname;
     private String lname;
-    private String fnumber;
+    private String phoneNumber;
     private int reputation;
     @ElementCollection
     private List<Integer> reps;
     private String vehicleName;
     private String vehicleLicense;
+    private Boolean ifAvailable=true;
+    private Double latitude;
+    private Double longitude;
 
-    public Rider(String fname, String lname, String fnumber,String vehicleName,String vehicleLicense) {
+    public Rider(String fname, String lname, String phoneNumber,String vehicleName,String vehicleLicense) {
         this.fname=fname;
         this.lname=lname;
-        this.fnumber=fnumber;
+        this.phoneNumber=phoneNumber;
         this.reputation=0;
         this.vehicleName=vehicleName;
         this.vehicleLicense=vehicleLicense;
         this.reps = new ArrayList<>();
+        this.latitude=0.0;
+        this.longitude=0.0;
     }
 
-    public Rider(Long riderId,String fname, String lname, String fnumber,String vehicleName,String vehicleLicense) {
+    public Rider(Long riderId,String fname, String lname, String phoneNumber,String vehicleName,String vehicleLicense) {
         this.fname=fname;
         this.lname=lname;
-        this.fnumber=fnumber;
+        this.phoneNumber=phoneNumber;
         this.reputation=0;
         this.reps = new ArrayList<>();
         this.riderId=riderId;
         this.vehicleLicense=vehicleLicense;
         this.vehicleName=vehicleName;
+        this.latitude=0.0;
+        this.longitude=0.0;
     }
 
     public void addRep(Integer i){
@@ -56,6 +62,7 @@ public class Rider {
             total+=rep;
         }
         this.reputation=total/reps.size();
+
     }
 
 

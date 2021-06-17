@@ -140,7 +140,7 @@
 						</executions>
 					</plugin>
 				</plugins>
-				<profile>
+		<profile>
 			<id>sonar</id>
 			<properties>
 				
@@ -192,8 +192,7 @@
 				</plugins>
 			</build>
 		</profile>
-			</build>
-		</profile>
+		
 		<profile>
 			<id>sonar</id>
 			<properties>

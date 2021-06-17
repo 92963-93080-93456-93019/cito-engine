@@ -31,6 +31,7 @@ public class App {
 		this.address = address;
 		this.schedule = schedule;
 		this.image = image;
+		System.out.println("delete this print");
 	}
 
     @Id

@@ -57,7 +57,7 @@ public class AppService {
         if(schedule.equals(""))
             return new ResponseEntity<>(HttpResponses.INVALID_SCHEDULE, HttpStatus.FORBIDDEN);
 
-        App app = new App(tax,name,address,schedule,image);
+        App app = new App(1L,tax,name,address,schedule,image);
         Manager manager = managerRepository.findByManagerId(managerId);
         manager.setApp(app);
         appRepository.save(app);

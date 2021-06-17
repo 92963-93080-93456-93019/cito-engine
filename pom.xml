@@ -17,9 +17,17 @@
 
 	<properties>
 		<java.version>11</java.version>
+		
+		<!-- Sonar Cloud -->
 		<sonar.projectKey>92963-93080-93456-93019_cito-engine</sonar.projectKey>
 		<sonar.organization>92963-93080-93456-93019-1</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		
+		<!-- Sonar Coverage -->
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
 	</properties>
 
 	<dependencies>
@@ -134,23 +142,20 @@
 					  <plugin>
 					    <groupId>org.jacoco</groupId>
 					    <artifactId>jacoco-maven-plugin</artifactId>
-					    <version>0.8.5</version>
+					    <version>0.6.0.201210061924</version>
+					    <configuration>
+						<destFile>${sonar.jacoco.reportPath}</destFile>
+						<append>true</append>
+					    </configuration>
 					    <executions>
-					      <execution>
-						<id>prepare-agent</id>
-						<goals>
-						  <goal>prepare-agent</goal>
-						</goals>
-					      </execution>
-					      <execution>
-						<id>report</id>
-						  <phase>prepare-package</phase>
-						  <goals>
-						    <goal>report</goal>
-						</goals>
-					      </execution>
+						<execution>
+						    <id>agent</id>
+						    <goals>
+							<goal>prepare-agent</goal>
+						    </goals>
+						</execution>
 					    </executions>
-					  </plugin>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

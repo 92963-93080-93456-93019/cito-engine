@@ -21,7 +21,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0.4
-
+      - name: Maven Package
+        run: mvn -B clean package -DskipTests
+      - name: Maven Test
+        run: mvn -B test
       - name: SonarCloud Scan
         run: mvn -B clean package verify -Psonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:

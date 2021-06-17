@@ -27,4 +27,28 @@ public class ProductListItem {
         this.quantity=quantity;
     }
 
+	public Long getProductsListItemId() {
+		return productsListItemId;
+	}
+
+	public void setProductsListItemId(Long productsListItemId) {
+		this.productsListItemId = productsListItemId;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 }

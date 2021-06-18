@@ -6,12 +6,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.tqs.cito.model.Product;
 import ua.tqs.cito.service.AppService;
 import ua.tqs.cito.service.ProductService;
-import ua.tqs.cito.service.UserRegisterService;
+import ua.tqs.cito.service.UserService;
 
 @RestController
 @Tag(name = "Manager", description = "the Manager API")
@@ -25,7 +24,7 @@ public class ManagerController {
     private AppService appService;
 
     @Autowired
-    private UserRegisterService userRegisterService;
+    private UserService userService;
 
     // Manager registers a product
     @Operation(summary = "Manager registers a product.")
@@ -52,7 +51,14 @@ public class ManagerController {
     @Operation(summary = "Register a manager in the platform.")
     @PostMapping(value="/register",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> registerManager(@RequestBody JsonNode payload){
-        return userRegisterService.registerManager(payload);
+        return userService.registerManager(payload);
     }
+
+    // Manager retrieves his info
+    /*@Operation(summary = "Register a manager in the platform.")
+    @GetMapping(value="/{managerId}/info",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getManager(@PathVariable Long managerId){
+        return userService.getManager(managerId);
+    }*/
 
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserRegisterService {
+public class UserService {
 
     @Autowired
     private RiderRepository riderRepository;
@@ -71,6 +71,10 @@ public class UserRegisterService {
         managerRepository.save(m1);
         return new ResponseEntity<>(HttpResponses.MANAGER_SAVED, HttpStatus.CREATED);
     }
+
+    /*public ResponseEntity<Object> registerManager(JsonNode payload) {
+
+    }*/
 
     
 

@@ -28,7 +28,6 @@ import ua.tqs.cito.repository.ConsumerRepository;
 import ua.tqs.cito.repository.ManagerRepository;
 import ua.tqs.cito.repository.ProductRepository;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CitoApplication.class)
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 	

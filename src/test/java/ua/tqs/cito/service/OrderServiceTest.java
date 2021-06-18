@@ -31,7 +31,6 @@ import ua.tqs.cito.repository.*;
 import ua.tqs.cito.utils.HttpResponses;
 import ua.tqs.cito.utils.OrderStatusEnum;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CitoApplication.class)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class OrderServiceTest {

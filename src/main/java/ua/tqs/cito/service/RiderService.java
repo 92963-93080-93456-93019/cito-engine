@@ -22,12 +22,14 @@ public class RiderService {
 
         Rider r1 = riderRepository.findByRiderId(riderId);
 
-        if(payload.path("availability").asBoolean())
-            return new ResponseEntity<>(HttpResponses.RIDER_AVAILABILITY_INVALID, HttpStatus.FORBIDDEN);
+        //if(!payload.path("availability").asBoolean())
+        //    return new ResponseEntity<>(HttpResponses.RIDER_AVAILABILITY_INVALID, HttpStatus.FORBIDDEN);
 
         Boolean availability = payload.path("availability").asBoolean();
 
         r1.setIfAvailable(availability);
+
+        riderRepository.save(r1);
 
         return new ResponseEntity<>(HttpResponses.RIDER_AVAILABILITY_UPDATED, HttpStatus.OK);
     }
@@ -56,6 +58,8 @@ public class RiderService {
 
         r1.setLatitude(latitude);
         r1.setLongitude(longitude);
+
+        riderRepository.save(r1);
 
         return new ResponseEntity<>(HttpResponses.RIDER_LOCATION_UPDATED, HttpStatus.OK);
 

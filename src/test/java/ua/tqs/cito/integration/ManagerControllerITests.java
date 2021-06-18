@@ -43,11 +43,7 @@ public class ManagerControllerITests {
 	@Test
 	public void whenPostInProduct_thenReturnCreatedResponse( ) {
 
-		Random ran = new Random();
-		int x = ran.nextInt(999) + 1000;
-		String prodName = "TestProduct" + x;
-
-		String request = "{\"name\":\""+prodName+"\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"price\":13.00,\"image\":\"somebase64string\"}";
+		String request = "{\"name\":\"Batata\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"price\":13.00,\"image\":\"somebase64string\"}";
 
 		RestAssured
 				.given()
@@ -61,12 +57,7 @@ public class ManagerControllerITests {
 	@Test
 	public void whenPostInvalidProduct_thenReturnBadRequest( ) throws Exception {
 
-
-		Random ran = new Random();
-		int x = ran.nextInt(999) + 1000;
-		String prodName = "TestProduct" + x;
-
-		String request = "{\"name\":\""+prodName+"\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"image\":\"somebase64string\"}";
+		String request = "{\"name\":\"Batata\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"image\":\"somebase64string\"}";
 
 		RestAssured
 				.given()

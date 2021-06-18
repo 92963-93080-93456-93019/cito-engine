@@ -54,11 +54,20 @@ public class ManagerController {
         return userService.registerManager(payload);
     }
 
+
     // Manager retrieves his info
     /*@Operation(summary = "Register a manager in the platform.")
     @GetMapping(value="/{managerId}/info",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getManager(@PathVariable Long managerId){
         return userService.getManager(managerId);
     }*/
+
+    // Register a manager in the platform.
+    @Operation(summary = "Get the amount of money the manager got with all the sales his app made.")
+    @GetMapping(value="/{appid}/revenue",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getRevenue(@PathVariable Long appid){
+        return appService.getRevenue(appid);
+    }
+
 
 }

@@ -45,52 +45,51 @@ public class App {
     @Lob
     private String image;
 
-	public Long getAppid() {
-		return appid;
-	}
+    public Long getAppid() {
+        return appid;
+    }
 
-	public void setAppid(Long appid) {
-		this.appid = appid;
-	}
+    public void setAppid(Long appid) {
+        this.appid = appid;
+    }
 
-	public Double getTax() {
-		return tax;
-	}
+    public Double getTax() {
+        return tax;
+    }
 
-	public void setTax(Double tax) {
-		this.tax = tax;
-	}
+    public void setTax(Double tax) {
+        this.tax = tax;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getSchedule() {
-		return schedule;
-	}
+    public String getSchedule() {
+        return schedule;
+    }
 
-	public void setSchedule(String schedule) {
-		this.schedule = schedule;
-	}
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setImage(String image) {
-		this.image = image;
-	}
-
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

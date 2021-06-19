@@ -8,9 +8,6 @@ import lombok.*;
 import java.util.Objects;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @ToString
 @EqualsAndHashCode
 public class Product {
@@ -34,6 +31,9 @@ public class Product {
 		this.price = price;
 		this.image = image;
 		this.id=id;
+	}
+
+	public Product() {
 	}
 
 	@Id
@@ -78,32 +78,14 @@ public class Product {
 		return category;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 	public String getDescription() {
 		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Double getPrice() {
 		return price;
 	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
 	public String getImage() {
 		return image;
 	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 }

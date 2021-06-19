@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ua.tqs.cito.model.App;
-import ua.tqs.cito.model.Consumer;
 import ua.tqs.cito.model.Manager;
 import ua.tqs.cito.model.Product;
 import ua.tqs.cito.repository.AppRepository;

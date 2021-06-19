@@ -6,14 +6,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.tqs.cito.service.OrderService;
 import ua.tqs.cito.service.RiderService;
-import ua.tqs.cito.service.UserRegisterService;
+import ua.tqs.cito.service.UserService;
 
 @RestController
 @Tag(name = "Rider", description = "the Rider API")
+@CrossOrigin(origins = "*")
 @RequestMapping("/riderApi")
 public class RiderController {
 
@@ -21,7 +21,7 @@ public class RiderController {
     private OrderService orderService;
 
     @Autowired
-    private UserRegisterService userRegisterService;
+    private UserService userService;
 
     @Autowired
     private RiderService riderService;
@@ -44,7 +44,7 @@ public class RiderController {
     @Operation(summary = "Register a rider in the platform.")
     @PostMapping(value="/register",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> registerRider(@RequestBody JsonNode payload){
-        return userRegisterService.registerRider(payload);
+        return userService.registerRider(payload);
     }
 
     // Rider updates his availability

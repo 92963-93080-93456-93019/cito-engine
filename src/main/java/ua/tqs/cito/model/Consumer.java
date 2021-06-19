@@ -9,9 +9,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @ToString
 public class Consumer {
 
@@ -47,59 +44,30 @@ public class Consumer {
         this.consumerId = consumerId;
     }
 
-	public Long getConsumerId() {
-		return consumerId;
-	}
+    public Consumer() {
+    }
 
-	public void setConsumerId(Long consumerId) {
-		this.consumerId = consumerId;
-	}
+    public App getApp() {
+        return app;
+    }
 
-	public App getApp() {
-		return app;
-	}
+    public void setApp(App app) {
+        this.app = app;
+    }
 
-	public void setApp(App app) {
-		this.app = app;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getFname() {
-		return fname;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
+    public List<Order> getOrders() {
+        return orders;
+    }
 
-	public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

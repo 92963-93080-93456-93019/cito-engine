@@ -21,11 +21,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0.4
-      - name: Maven Package
-        run: mvn -B clean package -DskipTests
-      - name: Maven Test
-        run: mvn -B test
-      - name: SonarCloud Scan
-        run: mvn -B clean package verify -Psonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Test and SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar

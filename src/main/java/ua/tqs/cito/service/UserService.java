@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserRegisterService {
+public class UserService {
 
     @Autowired
     private RiderRepository riderRepository;
@@ -67,10 +67,14 @@ public class UserRegisterService {
             return new ResponseEntity<>(HttpResponses.INVALID_MANAGER_ADDRESS, HttpStatus.FORBIDDEN);
         }
 
-        Manager m1 = new Manager(payload.path("fname").asText(), payload.path("fname").asText(),payload.path("phone").asText(), payload.path("address").asText());
+        Manager m1 = new Manager(1L,payload.path("fname").asText(), payload.path("fname").asText(),payload.path("phone").asText(), payload.path("address").asText());
         managerRepository.save(m1);
         return new ResponseEntity<>(HttpResponses.MANAGER_SAVED, HttpStatus.CREATED);
     }
+
+    /*public ResponseEntity<Object> registerManager(JsonNode payload) {
+
+    }*/
 
     
 

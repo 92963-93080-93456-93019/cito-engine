@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @ToString
 public class Rider {
     @Id
@@ -55,6 +52,9 @@ public class Rider {
         this.longitude=0.0;
     }
 
+    public Rider() {
+    }
+
     public void addRep(Integer i){
         this.reps.add(i);
         int total = 0;
@@ -65,5 +65,27 @@ public class Rider {
 
     }
 
+    public Long getRiderId() {
+        return riderId;
+    }
 
+    public void setIfAvailable(Boolean ifAvailable) {
+        this.ifAvailable = ifAvailable;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 }

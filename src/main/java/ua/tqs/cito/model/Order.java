@@ -10,10 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @Table(name = "consumer_order")
-@Setter
-@Getter
 @ToString
 public class Order {
 
@@ -81,40 +78,11 @@ public class Order {
         this.longitude=longitude;
     }
 
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public List<ProductListItem> getProductListItems() {
-        return productListItems;
-    }
-
-    public void setProductListItems(List<ProductListItem> productListItems) {
-        this.productListItems = productListItems;
+    public Order() {
     }
 
     public Double getPrice() {
         return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Consumer getEndConsumer() {
-        return endConsumer;
-    }
-
-    public void setEndConsumer(Consumer endConsumer) {
-        this.endConsumer = endConsumer;
-    }
-
-    public OrderStatusEnum getOrderStatusEnum() {
-        return orderStatusEnum;
     }
 
     public void setOrderStatusEnum(OrderStatusEnum orderStatusEnum) {
@@ -143,21 +111,5 @@ public class Order {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
     }
 }

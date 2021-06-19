@@ -99,11 +99,22 @@ public class ManagerControllerITests {
 	}
 
 	@Test
-	public void whenGetRevenueReturnRevenue() {
+	public void whenGetStatistics_thenReturnOk() {
 
 		given()
-				.get("managerApi/1/revenue")
+				.get("managerApi/1/statistics?appid=1")
 		.then()
+				.assertThat()
+				.and().statusCode(200);
+
+	}
+
+	@Test
+	public void whenGetManagerInfo_thenReturnOk() {
+
+		given()
+				.get("managerApi/1/info")
+				.then()
 				.assertThat()
 				.and().statusCode(200);
 

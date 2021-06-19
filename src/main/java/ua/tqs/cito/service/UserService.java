@@ -72,6 +72,18 @@ public class UserService {
         return new ResponseEntity<>(HttpResponses.MANAGER_SAVED, HttpStatus.CREATED);
     }
 
+    public ResponseEntity<Object> getManager(Long managerId) {
+        if (!checkManagerId(managerId))
+            return new ResponseEntity<>(HttpResponses.INVALID_MANAGER, HttpStatus.FORBIDDEN);
+        Manager manager = managerRepository.findByManagerId(managerId);
+        return new ResponseEntity<>(manager, HttpStatus.OK);
+    }
+
+    // Check if manager exists
+    private boolean checkManagerId(Long managerId) {
+        return managerRepository.findByManagerId(managerId) != null;
+    }
+
     /*public ResponseEntity<Object> registerManager(JsonNode payload) {
 
     }*/

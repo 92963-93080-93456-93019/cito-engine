@@ -1,5 +1,8 @@
 package ua.tqs.cito.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +82,19 @@ public class ProductService {
 	// Check if client exists
 	private boolean checkConsumerId(Long consumerId) {
 		return consumerRepository.findByConsumerId(consumerId) != null;
+	}
+
+	public ResponseEntity<Object> getProduct(Long managerId, Long productId, Long appid) {
+		var app = appRepository.findByAppid(appid);
+		if (app == null)
+			return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
+		Manager manager = managerRepository.findManagerByApp(app);
+		if (manager == null || !manager.getManagerId().equals(managerId))
+			return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
+		Optional<Product> product = productRepository.findById(productId);
+		if (product.isEmpty() || product == null)
+			return new ResponseEntity<>(HttpResponses.INVALID_PRODUCT, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(product.get(), HttpStatus.OK);
 	}
 }
 

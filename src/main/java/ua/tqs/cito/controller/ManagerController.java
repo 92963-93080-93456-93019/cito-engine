@@ -39,6 +39,13 @@ public class ManagerController {
     public ResponseEntity<Object> getAllProducts(@PathVariable Long managerId, Long appid) {
         return productService.getAllProducts(managerId, appid);
     }
+    
+    // Manager gets products of app
+    @Operation(summary = "Manager gets specific product.")
+    @GetMapping(value = "{managerId}/products/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getProduct(@PathVariable Long managerId, @PathVariable Long productId,Long appid) {
+        return productService.getProduct(managerId, productId ,appid);
+    }
 
     // Manager registers his app
     @Operation(summary = "Register a app in the platform.")

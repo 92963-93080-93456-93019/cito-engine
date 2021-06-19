@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasKey;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -123,5 +125,53 @@ public class RiderControllerITest {
                 .assertThat()
                 .statusCode(200)
                 .and().body("message",equalTo("Rider location updated."));
+    }
+    
+    @Test
+    public void whenGetAvailability_thenReturnAvailability(){
+    	
+		given()
+			.get("riderApi/1/availability")
+			.then()
+			.assertThat()
+			.and().statusCode(200)
+			.and().body("$", hasKey("availability"));
+
+    }
+    
+    @Test
+    public void whenGetLocation_thenReturnLocation(){
+    	
+		given()
+			.get("riderApi/1/location")
+			.then()
+			.assertThat()
+			.and().statusCode(200)
+			.and().body("$", hasKey("longitude")).body("$", hasKey("latitude"));
+
+    }
+    
+    @Test
+    public void whenGetLocationForInvalidRider_thenReturnError(){
+    	
+		given()
+			.get("riderApi/100/location")
+			.then()
+			.assertThat()
+			.and().statusCode(403)
+			.and().body("message", equalTo("Invalid rider."));
+
+    }
+    
+    @Test
+    public void whenGetAvailabilityForInvalidRider_thenReturnError(){
+    	
+		given()
+			.get("riderApi/100/availability")
+			.then()
+			.assertThat()
+			.and().statusCode(403)
+			.and().body("message", equalTo("Invalid rider."));
+
     }
 }

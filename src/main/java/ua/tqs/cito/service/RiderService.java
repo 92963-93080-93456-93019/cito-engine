@@ -70,5 +70,19 @@ public class RiderService {
         return riderRepository.findByRiderId(riderId) == null;
     }
 
+	public ResponseEntity<Object> getLocation(Long riderId) {
+        if (checkRiderId(riderId))
+            return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
+		Rider r = riderRepository.findByRiderId(riderId);
+		return new ResponseEntity<>("{\"code\" : 200, \"latitude\" : "+r.getLatitude()+", \"longitude\" :"+r.getLongitude()+"}", HttpStatus.OK);
+	}
+
+	public ResponseEntity<Object> getAvailability(Long riderId) {
+        if (checkRiderId(riderId))
+            return new ResponseEntity<>(HttpResponses.INVALID_RIDER, HttpStatus.FORBIDDEN);
+		Rider r = riderRepository.findByRiderId(riderId);
+		return new ResponseEntity<>("{\"code\" : 200, \"availability\" : "+r.getIfAvailable()+"}", HttpStatus.OK);
+	}
+
 
 }

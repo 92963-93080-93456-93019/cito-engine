@@ -19,6 +19,7 @@ import ua.tqs.cito.model.*;
 import ua.tqs.cito.repository.AppRepository;
 import ua.tqs.cito.repository.ManagerRepository;
 import ua.tqs.cito.repository.OrderRepository;
+import ua.tqs.cito.repository.ProductRepository;
 import ua.tqs.cito.utils.HttpResponses;
 import ua.tqs.cito.utils.OrderStatusEnum;
 
@@ -42,6 +43,9 @@ public class AppServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private ProductRepository productRepository;
 
     @InjectMocks
     private AppService appService;
@@ -229,12 +233,12 @@ public class AppServiceTest {
     }
 
     @Test
-    public void WhenGettingRevenueWithInvalidAppReturnForbidden(){
+    public void WhenGettingStatisticsWithInvalidApp_thenReturnForbidden(){
         Long appid = 1L;
 
         given(appRepository.findByAppid(appid)).willReturn(null);
 
-        ResponseEntity<Object> r = appService.getRevenue(appid);
+        ResponseEntity<Object> r = appService.getStatistics(appid);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
         assertThat(r.getBody(), is(HttpResponses.INVALID_APP));
@@ -242,7 +246,7 @@ public class AppServiceTest {
     }
 
     @Test
-    public void WhenGettingRevenueReturnOk(){
+    public void WhenGettingStatistics_ReturnOk(){
         Long appid = 1L;
 
         App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
@@ -265,13 +269,29 @@ public class AppServiceTest {
         List<Order> orders = new ArrayList<>();
         orders.add(o1);
 
+        List<Consumer> lc = new ArrayList<>();
+        lc.add(c1);
+
+        List<Product> lp = new ArrayList<>();
+        lp.add(p1);
+        lp.add(p2);
+
+        ProductSalesDTO psdto1 = new ProductSalesDTO(p1,180L);
+        ProductSalesDTO psdto2 = new ProductSalesDTO(p2,120L);
+        List<ProductSalesDTO> lpsdto = new ArrayList<>();
+        lpsdto.add(psdto1);
+        lpsdto.add(psdto2);
+
         given(appRepository.findByAppid(appid)).willReturn(app);
         given(orderRepository.findOrdersByApp(app)).willReturn(orders);
+        given(orderRepository.findNumberOfDifferentClients(app)).willReturn(lc);
+        given(productRepository.findByApp(app)).willReturn(lp);
+        given(productRepository.findMostSoldProductsOfApp(app)).willReturn(lpsdto);
 
-        ResponseEntity<Object> r = appService.getRevenue(appid);
+        ResponseEntity<Object> r = appService.getStatistics(appid);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
-        AssertionsForClassTypes.assertThat(Double.parseDouble(r.getBody().toString()) ).isGreaterThan(0);
+        //AssertionsForClassTypes.assertThat(r.getBody());
 
     }
 }

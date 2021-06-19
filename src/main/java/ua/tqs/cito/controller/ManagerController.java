@@ -15,6 +15,7 @@ import ua.tqs.cito.service.UserService;
 @RestController
 @Tag(name = "Manager", description = "the Manager API")
 @RequestMapping("/managerApi")
+@CrossOrigin(origins = "*")
 public class ManagerController {
 
     @Autowired
@@ -63,17 +64,17 @@ public class ManagerController {
 
 
     // Manager retrieves his info
-    /*@Operation(summary = "Register a manager in the platform.")
+    @Operation(summary = "Retrieve manager info.")
     @GetMapping(value="/{managerId}/info",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getManager(@PathVariable Long managerId){
+    public ResponseEntity<Object> getManagerInfo(@PathVariable Long managerId){
         return userService.getManager(managerId);
-    }*/
+    }
 
     // Register a manager in the platform.
     @Operation(summary = "Get the amount of money the manager got with all the sales his app made.")
-    @GetMapping(value="/{appid}/revenue",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getRevenue(@PathVariable Long appid){
-        return appService.getRevenue(appid);
+    @GetMapping(value="/{appid}/statistics",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getStatistics(@PathVariable Long appid){
+        return appService.getStatistics(appid);
     }
 
 

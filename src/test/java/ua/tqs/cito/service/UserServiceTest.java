@@ -294,4 +294,30 @@ public class UserServiceTest {
 
         assertThat(r.getBody(), is(HttpResponses.MANAGER_SAVED));
     }
+
+    @Test
+    public void whenGetManagerInfo_thenReturnCreated() {
+
+        Manager m1 = new Manager("Tiago","Oliveira","Rua fixe","919191785");
+
+        given(managerRepository.findByManagerId(1L)).willReturn(m1);
+
+        ResponseEntity<Object> r = userService.getManager(1L);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
+
+    }
+
+    @Test
+    public void whenGetInvalidManagerInfo_thenReturnInvalidManager() {
+
+        given(managerRepository.findByManagerId(2L)).willReturn(null);
+
+        ResponseEntity<Object> r = userService.getManager(1L);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_MANAGER));
+
+    }
 }

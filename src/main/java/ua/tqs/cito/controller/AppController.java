@@ -14,7 +14,7 @@ import ua.tqs.cito.service.ProductService;
 @RestController
 @Tag(name = "Client", description = "the client API")
 @RequestMapping("/clientApi")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://cito-web.herokuapp.com")
 public class AppController {
 
 	@Autowired

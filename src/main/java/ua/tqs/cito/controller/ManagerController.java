@@ -15,7 +15,7 @@ import ua.tqs.cito.service.UserService;
 @RestController
 @Tag(name = "Manager", description = "the Manager API")
 @RequestMapping("/managerApi")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://cito-manager-app.herokuapp.com")
 public class ManagerController {
 
     @Autowired
@@ -70,7 +70,6 @@ public class ManagerController {
         return userService.registerManager(payload);
     }
 
-
     // Manager retrieves his info
     @Operation(summary = "Retrieve manager info.")
     @GetMapping(value="/{managerId}/info",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,8 +77,8 @@ public class ManagerController {
         return userService.getManager(managerId);
     }
 
-    // Register a manager in the platform.
-    @Operation(summary = "Get the amount of money the manager got with all the sales his app made.")
+    // Manager gets app statistics
+    @Operation(summary = "Manager gets app statistics.")
     @GetMapping(value="/{appid}/statistics",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getStatistics(@PathVariable Long appid){
         return appService.getStatistics(appid);

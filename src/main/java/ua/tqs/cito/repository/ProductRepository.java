@@ -14,5 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     public List<Product> findAll();
     public List<Product> findByApp(App l);
     public List<Product> findByNameLikeAndApp(String likeName, App app);
+    public Long deleteProductById(Long id);
 
 }

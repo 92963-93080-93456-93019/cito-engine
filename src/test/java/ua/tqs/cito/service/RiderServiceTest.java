@@ -249,4 +249,64 @@ public class RiderServiceTest {
 
         assertThat(r.getBody(), is(HttpResponses.RIDER_LOCATION_UPDATED));
     }
+    
+    @Test
+    public void whenRiderGetsLocation_ReturnOk() throws JsonProcessingException {
+        long riderId = 1L;
+
+        Rider r1 = new Rider("Dinis", "Cruz", "919191781","Mercedes","00-00-00");
+        
+        r1.setLatitude(50.0);
+        r1.setLongitude(50.0);
+
+        given(riderRepository.findByRiderId(riderId)).willReturn(r1);
+
+        ResponseEntity<Object> r = riderService.getLocation(riderId);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
+        assertThat(r.getBody(), is("{\"code\" : 200, \"latitude\" : "+50.0+", \"longitude\" :"+50.0+"}"));
+
+    }
+    
+    @Test
+    public void whenRiderGetsAvailability_ReturnOk() throws JsonProcessingException {
+        long riderId = 1L;
+
+        Rider r1 = new Rider("Dinis", "Cruz", "919191781","Mercedes","00-00-00");
+
+        r1.setIfAvailable(true);
+        
+        given(riderRepository.findByRiderId(riderId)).willReturn(r1);
+
+        ResponseEntity<Object> r = riderService.getAvailability(riderId);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
+        assertThat(r.getBody(), is("{\"code\" : 200, \"availability\" : "+true+"}"));
+
+    }
+    
+    @Test
+    public void whenRiderGetsAvailability_ReturnForbiden() throws JsonProcessingException {
+        long riderId = 1L;
+        
+        given(riderRepository.findByRiderId(riderId)).willReturn(null);
+
+        ResponseEntity<Object> r = riderService.getAvailability(riderId);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+        assertThat(r.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid rider.\"}"));
+
+    }
+    @Test
+    public void whenRiderGetsLocation_ReturnForbiden() throws JsonProcessingException {
+        long riderId = 1L;
+        
+        given(riderRepository.findByRiderId(riderId)).willReturn(null);
+
+        ResponseEntity<Object> r = riderService.getLocation(riderId);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+        assertThat(r.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid rider.\"}"));
+
+    }
 }

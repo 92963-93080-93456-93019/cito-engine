@@ -4,6 +4,8 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasKey;
 
 public class RiderControllerITest {
 
@@ -110,5 +112,49 @@ public class RiderControllerITest {
                 .assertThat()
                 .statusCode(200)
                 .and().body("message",equalTo("Rider location updated."));
+    }
+    
+    @Test
+    public void whenGetAvailability_thenReturnAvailability(){
+
+        RestAssured
+                .get("http://localhost:8081/riderApi/1/availability")
+                .then()
+                .assertThat()
+                .and().statusCode(200)
+                .and().body("$", hasKey("availability"));
+    }
+    
+    @Test
+    public void whenGetLocation_thenReturnLocation(){
+
+        RestAssured
+                .get("http://localhost:8081/riderApi/1/location")
+                .then()
+                .assertThat()
+                .and().statusCode(200)
+                .and().body("$", hasKey("longitude")).body("$", hasKey("latitude"));
+    }
+    
+    @Test
+    public void whenGetLocationForInvalidRider_thenReturnError(){
+
+        RestAssured
+                .get("http://localhost:8081/riderApi/100/location")
+                .then()
+                .assertThat()
+                .and().statusCode(403)
+                .and().body("message", equalTo("Invalid rider."));
+    }
+    
+    @Test
+    public void whenGetAvailabilityForInvalidRider_thenReturnError(){
+
+        RestAssured
+                .get("http://localhost:8081/riderApi/100/availability")
+                .then()
+                .assertThat()
+                .and().statusCode(403)
+                .and().body("message", equalTo("Invalid rider."));
     }
 }

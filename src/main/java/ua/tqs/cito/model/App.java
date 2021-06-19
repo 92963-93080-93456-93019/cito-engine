@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @ToString
 public class App {
 
@@ -25,14 +22,17 @@ public class App {
         this.image = image;
     }
 
-	public App(Double tax, String name, String address, String schedule, String image) {
-		this.tax = tax;
-		this.name = name;
-		this.address = address;
-		this.schedule = schedule;
-		this.image = image;
-		System.out.println("delete this print");
-	}
+    public App(Double tax, String name, String address, String schedule, String image) {
+        this.tax = tax;
+        this.name = name;
+        this.address = address;
+        this.schedule = schedule;
+        this.image = image;
+        System.out.println("delete this print");
+    }
+
+    public App() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,14 +53,6 @@ public class App {
         this.appid = appid;
     }
 
-    public Double getTax() {
-        return tax;
-    }
-
-    public void setTax(Double tax) {
-        this.tax = tax;
-    }
-
     public String getName() {
         return name;
     }
@@ -75,21 +67,5 @@ public class App {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }

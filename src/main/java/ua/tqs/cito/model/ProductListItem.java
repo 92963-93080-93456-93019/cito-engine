@@ -8,9 +8,6 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @ToString
 public class ProductListItem {
 
@@ -27,12 +24,7 @@ public class ProductListItem {
         this.quantity=quantity;
     }
 
-    public Long getProductsListItemId() {
-        return productsListItemId;
-    }
-
-    public void setProductsListItemId(Long productsListItemId) {
-        this.productsListItemId = productsListItemId;
+    public ProductListItem() {
     }
 
     public Product getProduct() {
@@ -45,9 +37,5 @@ public class ProductListItem {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }

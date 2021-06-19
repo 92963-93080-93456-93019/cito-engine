@@ -60,4 +60,18 @@ public class RiderController {
     public ResponseEntity<Object> updateLocation(@PathVariable Long riderId,@RequestBody JsonNode payload){
         return riderService.updateLocation(payload,riderId);
     }
+    
+    // Rider get his location
+    @Operation(summary = "Rider gets his location.")
+    @GetMapping(value="{riderId}/location",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getLocation(@PathVariable Long riderId){
+        return riderService.getLocation(riderId);
+    }
+    
+    // Rider get his availability
+    @Operation(summary = "Rider gets his availability.")
+    @GetMapping(value="{riderId}/availability",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAvailability(@PathVariable Long riderId){
+        return riderService.getAvailability(riderId);
+    }
 }

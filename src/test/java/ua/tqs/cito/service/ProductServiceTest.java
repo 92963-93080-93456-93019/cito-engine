@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -192,6 +193,82 @@ public class ProductServiceTest {
 
         assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
         assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid clientId.\"}"));
+    }
+    
+    @Test
+    public void whenGetSingleProductReturnThem() {
+    	Long managerId = 1L;
+    	Long appid = 1L;
+    	Long productId = 1L;
+    	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+    	Optional<Product> p = Optional.of(new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string"));
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
+    	
+    	given( appRepository.findByAppid(appid)).willReturn(app);
+    	given( managerRepository.findManagerByApp(app)).willReturn(m);
+        given( productRepository.findById(productId)).willReturn(p);
+        
+        ResponseEntity<Object> r_get = productService.getProduct(managerId,appid,productId);
+
+        assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
+        verify(productRepository, VerificationModeFactory.times(1)).findById(productId);
+    }
+    
+    @Test
+    public void whenGetSingleProductForInvalidManagerReturnManagerNotFound() {
+    	Long managerId = 1L;
+    	Long appid = 1L;
+    	Long productId = 1L;
+    	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+    	Optional<Product> p = Optional.of(new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string"));
+    	
+    	given( appRepository.findByAppid(appid)).willReturn(app);
+    	given( managerRepository.findManagerByApp(app)).willReturn(null);
+        
+        ResponseEntity<Object> r_get = productService.getProduct(managerId,appid,productId);
+
+        assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.NOT_FOUND)));
+        assertThat(r_get.getBody(), is("{\"code\" : 404, \"message\" : \"Manager not found for app.\"}"));
+        verify(managerRepository, VerificationModeFactory.times(1)).findManagerByApp(app);
+    }
+    
+    @Test
+    public void whenGetSingleProductForInvalidManagerReturnAppNotFound() {
+    	Long managerId = 1L;
+    	Long appid = 1L;
+    	Long productId = 1L;
+    	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+    	Optional<Product> p = Optional.of(new Product("Benuron","Farmácia Geral","Great for small pains!",app,13.00,"somebase64string"));
+    	
+    	given( appRepository.findByAppid(appid)).willReturn(null);
+        
+        ResponseEntity<Object> r_get = productService.getProduct(managerId,appid,productId);
+
+        assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.NOT_FOUND)));
+        assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid appId.\"}"));
+        verify(appRepository, VerificationModeFactory.times(1)).findByAppid(appid);
+    }
+    
+    @Test
+    public void whenGetSingleProductForInvalidProductReturnProductInvalid() {
+    	Long managerId = 1L;
+    	Long appid = 1L;
+    	Long productId = 1L;
+    	App app = new App(1L,2.40, "Farmácia Armando", "Rua do Cabeço", "8-19h", "someBase&4Image");
+    	Optional<Product> p = Optional.empty();
+    	Manager m = new Manager(managerId,"João","Alfredo","93943856","Rua Santo Jesus");
+    	m.setApp(app);
+    	
+    	given( appRepository.findByAppid(appid)).willReturn(app);
+    	given( managerRepository.findManagerByApp(app)).willReturn(m);
+        given( productRepository.findById(productId)).willReturn(p);
+        
+        ResponseEntity<Object> r_get = productService.getProduct(managerId,appid,productId);
+
+        assertThat(r_get.getStatusCode(), is(samePropertyValuesAs(HttpStatus.NOT_FOUND)));
+        assertThat(r_get.getBody(), is("{\"code\" : 403, \"message\" : \"Invalid productId (#).\"}"));
+        verify(productRepository, VerificationModeFactory.times(1)).findById(productId);
     }
 	
 	

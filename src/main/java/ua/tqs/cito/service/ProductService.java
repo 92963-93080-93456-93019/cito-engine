@@ -1,5 +1,8 @@
 package ua.tqs.cito.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,73 +15,109 @@ import ua.tqs.cito.repository.ManagerRepository;
 import ua.tqs.cito.repository.ProductRepository;
 import ua.tqs.cito.utils.HttpResponses;
 
+import javax.transaction.Transactional;
+
 
 @Service
 public class ProductService {
 
-	@Autowired
-	private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-	@Autowired
-	private AppRepository appRepository;
+    @Autowired
+    private AppRepository appRepository;
 
-	@Autowired
-	private ManagerRepository managerRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
 
-	@Autowired
-	private ConsumerRepository consumerRepository;
-	
-	public ResponseEntity<Object> registerProduct(Long managerId, Long appid, Product p) {
+    @Autowired
+    private ConsumerRepository consumerRepository;
 
-		var app = appRepository.findByAppid(appid);
-		if (app == null)
-			return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
-		
-		Manager manager = managerRepository.findManagerByApp(app);
-		if (manager == null || !manager.getManagerId().equals(managerId))
-			return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> registerProduct(Long managerId, Long appid, Product p) {
 
-		p.setApp(app);
-		System.out.println(p);
-		if (p.getName() == null || p.getApp() == null || p.getDescription() == null || p.getImage() == null || p.getPrice() == null || p.getCategory() == null) {
-			return new ResponseEntity<>(HttpResponses.PRODUCT_NOT_SAVED, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		productRepository.save(p);
-		return new ResponseEntity<>(HttpResponses.PRODUCT_SAVED, HttpStatus.CREATED);
-	}
-	
-	public ResponseEntity<Object> getAllProducts(Long managerId, Long appid){
+        var app = appRepository.findByAppid(appid);
+        if (app == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
 
-		var app = appRepository.findByAppid(appid);
-		if (app == null)
-			return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
+        Manager manager = managerRepository.findManagerByApp(app);
+        if (manager == null || !manager.getManagerId().equals(managerId))
+            return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
 
-		Manager manager = managerRepository.findManagerByApp(app);
-		if (manager == null || !manager.getManagerId().equals(managerId))
-			return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
+        p.setApp(app);
+        System.out.println(p);
+        if (p.getName() == null || p.getApp() == null || p.getDescription() == null || p.getImage() == null || p.getPrice() == null || p.getCategory() == null) {
+            return new ResponseEntity<>(HttpResponses.PRODUCT_NOT_SAVED, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        productRepository.save(p);
+        return new ResponseEntity<>(HttpResponses.PRODUCT_SAVED, HttpStatus.CREATED);
+    }
 
-		return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
-	}
+    public ResponseEntity<Object> getAllProducts(Long managerId, Long appid) {
 
-	public ResponseEntity<Object> getAllProductsForClient(Long consumerId, Long appid, String query){
+        var app = appRepository.findByAppid(appid);
+        if (app == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
 
-		var app = appRepository.findByAppid(appid);
-		if (app == null)
-			return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
+        Manager manager = managerRepository.findManagerByApp(app);
+        if (manager == null || !manager.getManagerId().equals(managerId))
+            return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
 
-		if (!checkConsumerId(consumerId))
-			return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
-		if (query == null) {
-			System.out.println("QUERY IS NULL");
-			return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(productRepository.findByNameLikeAndApp("%" + query + "%", app), HttpStatus.OK);
-		}
-	}
+        return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
+    }
 
-	// Check if client exists
-	private boolean checkConsumerId(Long consumerId) {
-		return consumerRepository.findByConsumerId(consumerId) != null;
-	}
+    public ResponseEntity<Object> getAllProductsForClient(Long consumerId, Long appid, String query) {
+
+        var app = appRepository.findByAppid(appid);
+        if (app == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
+
+        if (!checkConsumerId(consumerId))
+            return new ResponseEntity<>(HttpResponses.INVALID_CONSUMER, HttpStatus.FORBIDDEN);
+        if (query == null) {
+            System.out.println("QUERY IS NULL");
+            return new ResponseEntity<>(productRepository.findByApp(app), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(productRepository.findByNameLikeAndApp("%" + query + "%", app), HttpStatus.OK);
+        }
+    }
+
+    // Check if client exists
+    private boolean checkConsumerId(Long consumerId) {
+        return consumerRepository.findByConsumerId(consumerId) != null;
+    }
+
+    public ResponseEntity<Object> getProduct(Long managerId, Long productId, Long appid) {
+        var app = appRepository.findByAppid(appid);
+        if (app == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
+        Manager manager = managerRepository.findManagerByApp(app);
+        if (manager == null || !manager.getManagerId().equals(managerId))
+            return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isEmpty() || product == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_PRODUCT, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(product.get(), HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<Object> deleteProduct(Long managerId, Long productId, Long appid) {
+        System.out.println("DELETING PRODUCT WITH ID " + productId);
+        var app = appRepository.findByAppid(appid);
+        if (app == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.NOT_FOUND);
+
+        Manager manager = managerRepository.findManagerByApp(app);
+        if (manager == null || !manager.getManagerId().equals(managerId))
+            return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
+
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isEmpty() || product == null)
+            return new ResponseEntity<>(HttpResponses.INVALID_PRODUCT, HttpStatus.NOT_FOUND);
+
+        Long removed_product_id = productRepository.deleteProductById(productId);
+        System.out.println("removed product" + removed_product_id);
+        return new ResponseEntity<>(HttpResponses.PRODUCT_DELETED, HttpStatus.OK);
+
+    }
 }
 

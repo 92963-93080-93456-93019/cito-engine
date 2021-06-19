@@ -88,4 +88,68 @@ public class Rider {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+
+	public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+
+	public String getLname() {
+		return lname;
+	}
+
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public int getReputation() {
+		return reputation;
+	}
+
+	public void setReputation(int reputation) {
+		this.reputation = reputation;
+	}
+
+	public List<Integer> getReps() {
+		return reps;
+	}
+
+	public void setReps(List<Integer> reps) {
+		this.reps = reps;
+	}
+
+	public String getVehicleName() {
+		return vehicleName;
+	}
+
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+
+	public String getVehicleLicense() {
+		return vehicleLicense;
+	}
+
+	public void setVehicleLicense(String vehicleLicense) {
+		this.vehicleLicense = vehicleLicense;
+	}
+
+	public Boolean getIfAvailable() {
+		return ifAvailable;
+	}
+
+	public void setRiderId(Long riderId) {
+		this.riderId = riderId;
+	}
 }

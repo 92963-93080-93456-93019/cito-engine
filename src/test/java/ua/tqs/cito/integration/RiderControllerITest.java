@@ -1,21 +1,39 @@
 package ua.tqs.cito.integration;
 
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 
 import static org.hamcrest.Matchers.equalTo;
 
+@AutoConfigureMockMvc
+@SpringBootTest
+@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 public class RiderControllerITest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @BeforeEach
+    void setup() {
+        mockMvc(mvc);
+    }
 
     @Test
     public void whenUpdatingOrder_thenReturnUpdated( ){
 
         String response = "{\"orderId\":2,\"status\":\"GOING_TO_BUY\"}";
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/1/orders")
+                .body(response).post("riderApi/1/orders")
         .then()
                 .assertThat()
                 .statusCode(200)
@@ -27,10 +45,9 @@ public class RiderControllerITest {
 
         String response = "{\"orderId\":2,\"status\":\"INVALID_STATUS\"}";
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/1/orders")
+                .body(response).post("riderApi/1/orders")
         .then()
                 .assertThat()
                 .statusCode(403).and().body("message",equalTo("Status invalid."));
@@ -41,10 +58,9 @@ public class RiderControllerITest {
 
         String response = "{\"orderId\":2,\"status\":\"GOING_TO_BUY\"}";
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/20/orders")
+                .body(response).post("riderApi/20/orders")
         .then()
                 .assertThat()
                 .statusCode(403)
@@ -67,11 +83,10 @@ public class RiderControllerITest {
                 "\n" +
                 "}";
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/register")
-                .then()
+                .body(response).post("riderApi/register")
+        .then()
                 .assertThat()
                 .statusCode(201);
 
@@ -84,11 +99,10 @@ public class RiderControllerITest {
                 "        \"availability\": \"True\" "+
                 "}";
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/1/availability")
-                .then()
+                .body(response).post("riderApi/1/availability")
+        .then()
                 .assertThat()
                 .statusCode(200)
                 .and().body("message",equalTo("Rider availability updated."));
@@ -102,11 +116,10 @@ public class RiderControllerITest {
                 "        \"longitude\": \"50.0\" "+
                 "}";
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/json")
-                .body(response).post("http://localhost:8081/riderApi/1/location")
-                .then()
+                .body(response).post("riderApi/1/location")
+        .then()
                 .assertThat()
                 .statusCode(200)
                 .and().body("message",equalTo("Rider location updated."));

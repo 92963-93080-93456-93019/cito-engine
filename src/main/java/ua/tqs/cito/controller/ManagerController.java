@@ -34,31 +34,39 @@ public class ManagerController {
         return productService.registerProduct(managerId, appid, p);
     }
 
-    // Manager gets products of app
+    // Manager gets all products of app
     @Operation(summary = "Manager gets all the products.")
     @GetMapping(value = "{managerId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllProducts(@PathVariable Long managerId, Long appid) {
         return productService.getAllProducts(managerId, appid);
     }
-    
-    // Manager gets products of app
+
+    // Manager deletes product of app
+    @Operation(summary = "Deletes product by id.")
+    @DeleteMapping(value = "{managerId}/products/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteProduct(@PathVariable Long managerId, @PathVariable Long productId, Long appid) {
+        return productService.deleteProduct(managerId, productId, appid);
+    }
+
+
+    // Manager gets a product of app
     @Operation(summary = "Manager gets specific product.")
     @GetMapping(value = "{managerId}/products/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getProduct(@PathVariable Long managerId, @PathVariable Long productId,Long appid) {
-        return productService.getProduct(managerId, productId ,appid);
+    public ResponseEntity<Object> getProduct(@PathVariable Long managerId, @PathVariable Long productId, Long appid) {
+        return productService.getProduct(managerId, productId, appid);
     }
 
     // Manager registers his app
     @Operation(summary = "Register a app in the platform.")
     @PostMapping("{managerId}/app/register")
-    public ResponseEntity<Object> registerApp(@PathVariable Long managerId,@RequestBody JsonNode payload) {
+    public ResponseEntity<Object> registerApp(@PathVariable Long managerId, @RequestBody JsonNode payload) {
         return appService.registerApp(managerId, payload);
     }
 
     // Register a manager in the platform.
     @Operation(summary = "Register a manager in the platform.")
-    @PostMapping(value="/register",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> registerManager(@RequestBody JsonNode payload){
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> registerManager(@RequestBody JsonNode payload) {
         return userService.registerManager(payload);
     }
 
@@ -75,6 +83,7 @@ public class ManagerController {
     @GetMapping(value="/{appid}/statistics",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getStatistics(@PathVariable Long appid){
         return appService.getStatistics(appid);
+
     }
 
 

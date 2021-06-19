@@ -17,6 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     public List<Product> findAll();
     public List<Product> findByApp(App l);
     public List<Product> findByNameLikeAndApp(String likeName, App app);
+    public Long deleteProductById(Long id);
     @Query("SELECT new ua.tqs.cito.model.ProductSalesDTO(p, sum(pi.quantity)) FROM Product p JOIN ProductListItem pi ON p=pi.product WHERE p.app = ?1 GROUP BY p.id")
     public List<ProductSalesDTO> findMostSoldProductsOfApp(@Param("app_id") App app);
 

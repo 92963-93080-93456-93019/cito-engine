@@ -11,6 +11,8 @@ import java.util.List;
 
 @Entity
 @ToString
+@Getter
+@Setter
 public class App {
 
     public App(Long appid, Double tax, String name, String address, String schedule, String image) {

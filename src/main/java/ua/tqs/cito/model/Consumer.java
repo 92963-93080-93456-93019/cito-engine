@@ -10,6 +10,8 @@ import java.util.List;
 
 @Entity
 @ToString
+@Getter
+@Setter
 public class Consumer {
 
     @Id

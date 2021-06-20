@@ -12,6 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "consumer_order")
 @ToString
+@Getter
+@Setter
 public class Order {
 
     @Id
@@ -107,6 +109,10 @@ public class Order {
 
     public String getAddress() {
         return address;
+    }
+
+    public List<ProductListItem> getProductListItems() {
+        return productListItems;
     }
 
     public void setAddress(String address) {

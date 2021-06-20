@@ -11,6 +11,8 @@ import java.util.List;
 
 @Entity
 @ToString
+@Getter
+@Setter
 public class Rider {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

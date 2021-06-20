@@ -10,6 +10,8 @@ import java.util.Objects;
 @Entity
 @ToString
 @EqualsAndHashCode
+@Getter
+@Setter
 public class Product {
 
 	public Product(String name, String category, String description, App app, Double price, String image) {

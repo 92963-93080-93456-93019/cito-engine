@@ -9,6 +9,8 @@ import javax.persistence.*;
 
 @Entity
 @ToString
+@Getter
+@Setter
 public class ProductListItem {
 
     @Id

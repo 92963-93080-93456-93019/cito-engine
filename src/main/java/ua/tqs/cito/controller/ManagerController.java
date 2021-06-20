@@ -15,7 +15,7 @@ import ua.tqs.cito.service.UserService;
 @RestController
 @Tag(name = "Manager", description = "the Manager API")
 @RequestMapping("/managerApi")
-@CrossOrigin(origins = "https://cito-manager-app.herokuapp.com")
+@CrossOrigin(origins = {"https://cito-manager-app.herokuapp.com","http://localhost:3000"})
 public class ManagerController {
 
     @Autowired
@@ -47,7 +47,6 @@ public class ManagerController {
     public ResponseEntity<Object> deleteProduct(@PathVariable Long managerId, @PathVariable Long productId, Long appid) {
         return productService.deleteProduct(managerId, productId, appid);
     }
-
 
     // Manager gets a product of app
     @Operation(summary = "Manager gets specific product.")

@@ -8,16 +8,15 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @ToString
+@Getter
+@Setter
 public class ProductListItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productsListItemId;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "productId")
     private Product product;
     private int quantity;
@@ -27,28 +26,18 @@ public class ProductListItem {
         this.quantity=quantity;
     }
 
-	public Long getProductsListItemId() {
-		return productsListItemId;
-	}
+    public ProductListItem() {
+    }
 
-	public void setProductsListItemId(Long productsListItemId) {
-		this.productsListItemId = productsListItemId;
-	}
+    public Product getProduct() {
+        return product;
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
+    public int getQuantity() {
+        return quantity;
+    }
 }

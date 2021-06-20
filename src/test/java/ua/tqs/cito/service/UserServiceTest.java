@@ -25,10 +25,9 @@ import ua.tqs.cito.model.*;
 import ua.tqs.cito.repository.*;
 import ua.tqs.cito.utils.HttpResponses;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CitoApplication.class)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class UserRegisterServiceTest {
+public class UserServiceTest {
 
     @Mock
     private RiderRepository riderRepository;
@@ -37,7 +36,7 @@ public class UserRegisterServiceTest {
     private ManagerRepository managerRepository;
 
     @InjectMocks
-    private UserRegisterService userRegisterService;
+    private UserService userService;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -60,7 +59,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerRider(payload);
+        ResponseEntity<Object> r = userService.registerRider(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -85,7 +84,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerRider(payload);
+        ResponseEntity<Object> r = userService.registerRider(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -110,7 +109,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerRider(payload);
+        ResponseEntity<Object> r = userService.registerRider(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -135,7 +134,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerRider(payload);
+        ResponseEntity<Object> r = userService.registerRider(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -160,7 +159,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerRider(payload);
+        ResponseEntity<Object> r = userService.registerRider(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -189,7 +188,7 @@ public class UserRegisterServiceTest {
 
         given(riderRepository.save(r1)).willReturn(r1);
 
-        ResponseEntity<Object> r = userRegisterService.registerRider(payload);
+        ResponseEntity<Object> r = userService.registerRider(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.CREATED)));
 
@@ -208,7 +207,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+        ResponseEntity<Object> r = userService.registerManager(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -227,7 +226,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+        ResponseEntity<Object> r = userService.registerManager(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -247,7 +246,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+        ResponseEntity<Object> r = userService.registerManager(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -266,7 +265,7 @@ public class UserRegisterServiceTest {
 
         JsonNode payload = objectMapper.readTree(request);
 
-        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+        ResponseEntity<Object> r = userService.registerManager(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
 
@@ -289,10 +288,36 @@ public class UserRegisterServiceTest {
 
         given(managerRepository.save(m1)).willReturn(m1);
 
-        ResponseEntity<Object> r = userRegisterService.registerManager(payload);
+        ResponseEntity<Object> r = userService.registerManager(payload);
 
         assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.CREATED)));
 
         assertThat(r.getBody(), is(HttpResponses.MANAGER_SAVED));
+    }
+
+    @Test
+    public void whenGetManagerInfo_thenReturnCreated() {
+
+        Manager m1 = new Manager("Tiago","Oliveira","Rua fixe","919191785");
+
+        given(managerRepository.findByManagerId(1L)).willReturn(m1);
+
+        ResponseEntity<Object> r = userService.getManager(1L);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.OK)));
+
+    }
+
+    @Test
+    public void whenGetInvalidManagerInfo_thenReturnInvalidManager() {
+
+        given(managerRepository.findByManagerId(2L)).willReturn(null);
+
+        ResponseEntity<Object> r = userService.getManager(1L);
+
+        assertThat(r.getStatusCode(), is(samePropertyValuesAs(HttpStatus.FORBIDDEN)));
+
+        assertThat(r.getBody(), is(HttpResponses.INVALID_MANAGER));
+
     }
 }

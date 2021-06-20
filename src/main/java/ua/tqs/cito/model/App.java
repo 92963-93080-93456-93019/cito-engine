@@ -1,13 +1,10 @@
 package ua.tqs.cito.model;
 
+import javax.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @ToString
@@ -22,7 +19,7 @@ public class App {
         this.address = address;
         this.schedule = schedule;
         this.image = image;
-		System.out.println("remove this print");
+
     }
 
     public App(Double tax, String name, String address, String schedule, String image) {
@@ -31,7 +28,7 @@ public class App {
         this.address = address;
         this.schedule = schedule;
         this.image = image;
-        System.out.println("delete this print");
+
     }
 
     public App() {

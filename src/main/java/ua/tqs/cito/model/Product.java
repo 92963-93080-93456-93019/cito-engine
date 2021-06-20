@@ -1,11 +1,9 @@
 package ua.tqs.cito.model;
 
 import javax.persistence.*;
-
-import com.sun.istack.NotNull;
 import lombok.*;
 
-import java.util.Objects;
+
 
 @Entity
 @ToString

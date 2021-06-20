@@ -1,13 +1,12 @@
 package ua.tqs.cito.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @ToString
@@ -59,7 +58,7 @@ public class Rider {
 
     public void addRep(Integer i){
         this.reps.add(i);
-        int total = 0;
+        var total = 0;
         for(Integer rep:this.reps){
             total+=rep;
         }

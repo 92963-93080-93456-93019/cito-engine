@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +18,6 @@ import ua.tqs.cito.repository.OrderRepository;
 import ua.tqs.cito.repository.ProductRepository;
 import ua.tqs.cito.utils.HttpResponses;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class AppService {
@@ -41,7 +41,7 @@ public class AppService {
         if (!checkManagerId(managerId))
             return new ResponseEntity<>(HttpResponses.INVALID_MANAGER, HttpStatus.FORBIDDEN);
 
-        double tax = payload.path("tax").asDouble();
+        var tax = payload.path("tax").asDouble();
 
         if(tax==0)
             return new ResponseEntity<>(HttpResponses.INVALID_TAX, HttpStatus.FORBIDDEN);
@@ -66,8 +66,8 @@ public class AppService {
         if(schedule.equals(""))
             return new ResponseEntity<>(HttpResponses.INVALID_SCHEDULE, HttpStatus.FORBIDDEN);
 
-        App app = new App(1L,tax,name,address,schedule,image);
-        Manager manager = managerRepository.findByManagerId(managerId);
+        var app = new App(1L,tax,name,address,schedule,image);
+        var manager = managerRepository.findByManagerId(managerId);
         manager.setApp(app);
         appRepository.save(app);
         return new ResponseEntity<>(HttpResponses.APP_CREATED, HttpStatus.CREATED);
@@ -77,14 +77,14 @@ public class AppService {
 
         // Total Revenue
 
-        ObjectNode revenueObj = mapper.createObjectNode();
+        var revenueObj = mapper.createObjectNode();
 
         double revenue = 0;
 
         if (checkAppId(appid))
             return new ResponseEntity<>(HttpResponses.INVALID_APP, HttpStatus.FORBIDDEN);
 
-        App app = appRepository.findByAppid(appid);
+        var app = appRepository.findByAppid(appid);
 
         List<Order> orders = orderRepository.findOrdersByApp(app);
 

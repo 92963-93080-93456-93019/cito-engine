@@ -28,15 +28,4 @@ public class ProductListItem {
     public ProductListItem() {
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
 }

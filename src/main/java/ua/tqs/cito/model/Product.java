@@ -50,42 +50,4 @@ public class Product {
 	@Lob
 	private String image;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public App getApp() {
-		return app;
-	}
-
-	public void setApp(App app) {
-		this.app = app;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-	public String getImage() {
-		return image;
-	}
 }

@@ -19,105 +19,137 @@ import static org.hamcrest.Matchers.equalTo;
 import io.restassured.RestAssured;
 import ua.tqs.cito.utils.HttpResponses;
 
+import javax.transaction.Transactional;
+
 @AutoConfigureMockMvc
 @SpringBootTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ManagerControllerITests {
 
-	@Autowired
-	private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-	@BeforeEach
-	void setup() {
-		mockMvc(mvc);
-	}
-	    
-	@Test
-	public void whenPostInProduct_thenReturnCreatedResponse( ) {
+    @BeforeEach
+    void setup() {
+        mockMvc(mvc);
+    }
 
-		String request = "{\"name\":\"Batata\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"price\":13.00,\"image\":\"somebase64string\"}";
+    @Test
+    public void whenPostInProduct_thenReturnCreatedResponse() {
 
-		given()
-			.contentType("application/json")
-			.body(request).post("managerApi/1/products?appid=1")
-		.then()
-			.statusCode(201)
-			.body(equalTo(HttpResponses.PRODUCT_SAVED));
-	}
+        String request = "{\"name\":\"Batata\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"price\":13.00,\"image\":\"somebase64string\"}";
 
-	@Test
-	public void whenPostInvalidProduct_thenReturnBadRequest( ) throws Exception {
+        given()
+                .contentType("application/json")
+                .body(request).post("managerApi/1/products?appid=1")
+                .then()
+                .statusCode(201)
+                .body(equalTo(HttpResponses.PRODUCT_SAVED));
+    }
 
-		String request = "{\"name\":\"Batata\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"image\":\"somebase64string\"}";
+    @Test
+    public void whenPostInvalidProduct_thenReturnBadRequest() throws Exception {
 
-		given()
-			.contentType("application/json")
-			.body(request).post("managerApi/1/products?appid=1")
-		.then()
-			.statusCode(500)
-			.body(equalTo(HttpResponses.PRODUCT_NOT_SAVED));
-	}
+        String request = "{\"name\":\"Batata\",\"category\":\"Farmácia Geral\",\"description\":\"Great for small pains!\",\"appId\":1,\"image\":\"somebase64string\"}";
 
-	@Test
-	public void whenRegisterAppthenReturnCreated() {
+        given()
+                .contentType("application/json")
+                .body(request).post("managerApi/1/products?appid=1")
+                .then()
+                .statusCode(500)
+                .body(equalTo(HttpResponses.PRODUCT_NOT_SAVED));
+    }
 
-		String request = "{\n" +
-				"    \"tax\":50,\n" +
-				"    \"name\": \"appfixe\",\n" +
-				"    \"address\": \"Rua fixe\",\n" +
-				"    \"schedule\": \"24/7\",\n" +
-				"    \"image\":\"imagemfixe\"\n" +
-				"}";
+    @Test
+    public void whenRegisterAppthenReturnCreated() {
+
+        String request = "{\n" +
+                "    \"tax\":50,\n" +
+                "    \"name\": \"appfixe\",\n" +
+                "    \"address\": \"Rua fixe\",\n" +
+                "    \"schedule\": \"24/7\",\n" +
+                "    \"image\":\"imagemfixe\"\n" +
+                "}";
 
 
-		given()
-				.contentType("application/json")
-				.body(request).post("managerApi/1/app/register")
-		.then()
-				.assertThat()
-				.statusCode(201);
+        given()
+                .contentType("application/json")
+                .body(request).post("managerApi/1/app/register")
+                .then()
+                .assertThat()
+                .statusCode(201);
 
-	}
+    }
 
-	@Test
-	public void whenRegisterManagerReturnCreated() {
+    @Test
+    public void whenRegisterManagerReturnCreated() {
 
-		String request = "{\n" +
-				"    \"fname\":\"Tiago\",\n" +
-				"    \"lname\": \"Oliveira\",\n" +
-				"    \"address\": \"Rua fixe\",\n" +
-				"    \"phone\": \"919191785\"\n" +
-				"}";
+        String request = "{\n" +
+                "    \"fname\":\"Tiago\",\n" +
+                "    \"lname\": \"Oliveira\",\n" +
+                "    \"address\": \"Rua fixe\",\n" +
+                "    \"phone\": \"919191785\"\n" +
+                "}";
 
-		given()
-				.contentType("application/json")
-				.body(request).post("managerApi/register")
-		.then()
-				.assertThat()
-				.statusCode(201);
+        given()
+                .contentType("application/json")
+                .body(request).post("managerApi/register")
+                .then()
+                .assertThat()
+                .statusCode(201);
 
-	}
+    }
 
-	@Test
-	public void whenGetStatistics_thenReturnOk() {
+    @Test
+    public void whenGetStatistics_thenReturnOk() {
 
-		given()
-				.get("managerApi/1/statistics?appid=1")
-		.then()
-				.assertThat()
-				.and().statusCode(200);
+        given()
+                .get("managerApi/1/statistics?appid=1")
+                .then()
+                .assertThat()
+                .and().statusCode(200);
 
-	}
+    }
 
-	@Test
-	public void whenGetManagerInfo_thenReturnOk() {
+    @Test
+    public void whenGetManagerInfo_thenReturnOk() {
 
-		given()
-				.get("managerApi/1/info")
-				.then()
-				.assertThat()
-				.and().statusCode(200);
+        given()
+                .get("managerApi/1/info")
+                .then()
+                .assertThat()
+                .and().statusCode(200);
 
-	}
+    }
 
+    @Test
+    @Transactional
+    public void whenDeleteManager_thenReturnOk() {
+        given()
+                .delete("managerApi/1/products/3?appid=1")
+                .then()
+                .assertThat()
+                .statusCode(200);
+    }
+
+    @Test
+    public void whenGetProduct_thenReturnOk() {
+
+        given()
+                .get("managerApi/1/products/3?appid=1")
+                .then()
+                .assertThat()
+                .and().statusCode(200);
+
+    }
+
+    @Test
+    public void whenGetAllProducts_thenReturnOk() {
+
+        given()
+                .get("managerApi/1/products?appid=1")
+                .then()
+                .assertThat()
+                .and().statusCode(200);
+    }
 }

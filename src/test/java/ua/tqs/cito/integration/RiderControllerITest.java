@@ -174,4 +174,14 @@ public class RiderControllerITest {
 			.and().body("message", equalTo("Invalid rider."));
 
     }
+
+    @Test
+    public void whenGetAllProducts_thenReturnOk() {
+
+        given()
+                .get("riderApi/1/orders?appid=1")
+                .then()
+                .assertThat()
+                .and().statusCode(200);
+    }
 }

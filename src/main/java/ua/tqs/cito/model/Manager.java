@@ -43,23 +43,5 @@ public class Manager {
 	public Manager() {
 	}
 
-	public Long getManagerId() {
-		return managerId;
-	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public App getApp() {
-		return app;
-	}
-
-	public void setApp(App app) {
-		this.app = app;
-	}
 }

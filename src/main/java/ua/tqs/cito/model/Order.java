@@ -83,39 +83,5 @@ public class Order {
     public Order() {
     }
 
-    public Double getPrice() {
-        return price;
-    }
 
-    public void setOrderStatusEnum(OrderStatusEnum orderStatusEnum) {
-        this.orderStatusEnum = orderStatusEnum;
-    }
-
-    public Rider getRider() {
-        return rider;
-    }
-
-    public void setRider(Rider rider) {
-        this.rider = rider;
-    }
-
-    public App getApp() {
-        return app;
-    }
-
-    public void setApp(App app) {
-        this.app = app;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public List<ProductListItem> getProductListItems() {
-        return productListItems;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }

@@ -94,7 +94,7 @@ public class ProductService {
         if (manager == null || !manager.getManagerId().equals(managerId))
             return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
         Optional<Product> product = productRepository.findById(productId);
-        if (product.isEmpty() || product == null)
+        if (product.isEmpty())
             return new ResponseEntity<>(HttpResponses.INVALID_PRODUCT, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
@@ -111,7 +111,7 @@ public class ProductService {
             return new ResponseEntity<>(HttpResponses.MANAGER_NOT_FOUND_FOR_APP, HttpStatus.NOT_FOUND);
 
         Optional<Product> product = productRepository.findById(productId);
-        if (product.isEmpty() || product == null)
+        if (product.isEmpty())
             return new ResponseEntity<>(HttpResponses.INVALID_PRODUCT, HttpStatus.NOT_FOUND);
 
         Long removed_product_id = productRepository.deleteProductById(productId);

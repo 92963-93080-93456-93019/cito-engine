@@ -48,27 +48,4 @@ public class Consumer {
     public Consumer() {
     }
 
-    public App getApp() {
-        return app;
-    }
-
-    public void setApp(App app) {
-        this.app = app;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
 }

@@ -165,7 +165,6 @@ public class OrderService {
 
         orderRepository.save(orderToUpdate);
         return new ResponseEntity<>(HttpResponses.ORDER_UPDATED.replace("#", state), HttpStatus.OK);
-
     }
 
     public ResponseEntity<Object> consumerRatesRider(Long consumerId, Long riderId, Integer rating, Long appid) {
@@ -204,9 +203,13 @@ public class OrderService {
 
     // Check and return product if exists, null otherwise
     public Product checkAndGetProduct(Long id) {
-       if(productRepository.findById(id).isEmpty())
-           return null;
-       return productRepository.findById(id).get();
+
+        Optional<Product> value = productRepository.findById(id);
+
+        if(value.isPresent())
+            return value.get();
+
+        return null;
     }
 
     // Check and return order if exists, null otherwise

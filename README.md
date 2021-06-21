@@ -1,7 +1,6 @@
 # CITO
 
 ### Abstract:
-
 A nossa aplicação chama-se “CITO” que significa “rapidamente” em latim.
 
 Esta aplicação é baseada num sistema de entrega de produtos - em específico entrega de farmacêuticos. Como todas as outras aplicações que proporcionam o serviço de entregas ao domicílio - UberEats,Telepizza, etc…, tem o objetivo de poupar ao cliente a deslocação para comprar

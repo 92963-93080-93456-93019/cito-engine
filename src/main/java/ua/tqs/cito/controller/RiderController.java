@@ -13,7 +13,7 @@ import ua.tqs.cito.service.UserService;
 
 @RestController
 @Tag(name = "Rider", description = "the Rider API")
-@CrossOrigin(origins = {"https://cito-rider-app.herokuapp.com","http://localhost:3000"})
+@CrossOrigin(origins = "*")
 @RequestMapping("/riderApi")
 public class RiderController {
 

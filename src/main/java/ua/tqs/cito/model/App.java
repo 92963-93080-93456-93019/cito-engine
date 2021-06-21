@@ -1,6 +1,7 @@
 package ua.tqs.cito.model;
 
 import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -45,27 +46,4 @@ public class App {
     @Lob
     private String image;
 
-    public Long getAppid() {
-        return appid;
-    }
-
-    public void setAppid(Long appid) {
-        this.appid = appid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }

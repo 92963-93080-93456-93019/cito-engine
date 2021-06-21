@@ -1,22 +1,23 @@
 package ua.tqs.cito.model;
 
-public class ProductSalesDTO  implements Comparable<ProductSalesDTO>{
 
-Product product;
-Long salesQuantity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-    public ProductSalesDTO(Product product, Long salesQuantity){
+@ToString
+@Getter
+@Setter
+public class ProductSalesDTO implements Comparable<ProductSalesDTO> {
+
+    private Product product;
+    private Long salesQuantity;
+
+    public ProductSalesDTO(Product product, Long salesQuantity) {
         this.product = product;
         this.salesQuantity = salesQuantity;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public Long getSalesQuantity() {
-        return salesQuantity;
-    }
 
     @Override
     public int compareTo(ProductSalesDTO o) {

@@ -1,5 +1,7 @@
 package ua.tqs.cito.utils;
 
+import org.springframework.http.HttpStatus;
+
 public class HttpResponses {
     public static final String INVALID_APP = "{\"code\" : 403, \"message\" : \"Invalid appId.\"}";
     public static final String INVALID_CONSUMER = "{\"code\" : 403, \"message\" : \"Invalid clientId.\"}";
@@ -36,4 +38,7 @@ public class HttpResponses {
     public static final String INVALID_MANAGER_PHONE = "{\"code\" : 403, \"message\" : \"Invalid manager phone.\"}";
     public static final String INVALID_MANAGER_ADDRESS = "{\"code\" : 403, \"message\" : \"Invalid manager address.\"}";
     public static final String MANAGER_SAVED = "{\"code\" : 201, \"message\" : \"Manager saved.\"}";
+
+    private HttpResponses(){}
+
 }

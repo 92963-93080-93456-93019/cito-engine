@@ -20,7 +20,7 @@ falta de tempo ou por outra razão qualquer.
 - **Product Owner:** [Tiago Oliveira](https://github.com/TiagoOliveira0)
 - **QA Engineer:** [Dinis Cruz](https://github.com/Barroqueiro)
 - **DevOps Master:** [Lucas Sousa](https://github.com/l-sousa)
-- **Developer:** Todos os membros
+- **Developer:** Todos
 
 ###Project Bookmarks:
 

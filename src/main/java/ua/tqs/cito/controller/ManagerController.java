@@ -15,7 +15,6 @@ import ua.tqs.cito.service.UserService;
 @RestController
 @Tag(name = "Manager", description = "the Manager API")
 @RequestMapping("/managerApi")
-@CrossOrigin(origins = {"https://cito-manager-app.herokuapp.com","http://localhost:3000"})
 public class ManagerController {
 
     @Autowired

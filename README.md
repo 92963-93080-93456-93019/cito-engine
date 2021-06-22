@@ -27,8 +27,8 @@ falta de tempo ou por outra razão qualquer.
 - [Project Github Organization](https://github.com/92963-93080-93456-93019)
 - [QA Dashboard](https://sonarcloud.io/organizations/92963-93080-93456-93019-1/projects)
 
-- [Engine API](https://cito-engine.herokuapp.com/swagger-ui.html#/)
-- [Client API](https://cito-client.herokuapp.com/swagger-ui.html#/)
+- [Engine API Documentation](https://cito-engine.herokuapp.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/)
+- [Client API Documenation](https://cito-client.herokuapp.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/)
 
 - [Engine Deployment](https://cito-engine.herokuapp.com/)
 - [Client Deployment](https://cito-client.herokuapp.com/)

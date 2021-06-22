@@ -12,8 +12,7 @@ import ua.tqs.cito.service.RiderService;
 import ua.tqs.cito.service.UserService;
 
 @RestController
-@Tag(name = "Rider", description = "the Rider API")
-@CrossOrigin(origins = "*")
+@Tag(name = "Rider", description = "the Rider API"))
 @RequestMapping("/riderApi")
 public class RiderController {
 

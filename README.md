@@ -34,4 +34,5 @@ falta de tempo ou por outra razão qualquer.
 - [Client Deployment](https://cito-client.herokuapp.com/)
 - [Client Web App Deployment](https://cito-client-app.herokuapp.com/)
 - [Rider Web App Deployment](https://cito-rider-app.herokuapp.com/)
+- [Rider Android App](https://drive.google.com/file/d/1_nTussRVFtFdjtY_1BaE69ylC_ZjLIln/view?usp=sharing)
 - [Manager Web App Deployment](https://cito-manager-app.herokuapp.com/)
